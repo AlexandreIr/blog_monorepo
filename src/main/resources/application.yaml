@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/blog_db
+    username: admin
+    password: senha
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+
+Cloudinary:
+  cloud_name: seu_cloud_name
+  api_key: sua_api_key
+  api_secret: seu_api_secret
+
+
+jwt:
+  secret: 6Y4bHzJlq3Wx5LwFKKRtWpTDmdijQgXW78F1p8PFiSP
+  expiration: 86400000 # 1 dia em milissegundos
