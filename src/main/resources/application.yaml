@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/blog_db
     username: admin
-    password: senha
+    password: pa
   jpa:
     hibernate:
       ddl-auto: update
@@ -19,5 +19,5 @@ Cloudinary:
 
 
 jwt:
-  secret: 6Y4bHzJlq3Wx5LwFKKRtWpTDmdijQgXW78F1p8PFiSP
-  expiration: 86400000 # 1 dia em milissegundos
+  secret: (|:Psli#CdvTKjJ2u&)GK.7Yd42mgvl0,#Bz|F6NZ)q*>!1zj/gzu9{tdr&stltIiz46z;b8Htq_tLy;ZMB#|s
+  expiration: 43200000
