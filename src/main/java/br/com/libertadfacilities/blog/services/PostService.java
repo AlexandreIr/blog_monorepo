@@ -7,6 +7,7 @@ import br.com.libertadfacilities.blog.repositories.CategoryRepository;
 import br.com.libertadfacilities.blog.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,9 +19,12 @@ public class PostService {
     private final UserService userService;
     private final CategoryRepository categoryRepository;
 
+    public final CloudinaryService cloudinaryService;
+
     public Post createPost(Post post,
                            Long authorId,
-                           Long categoryId){
+                           Long categoryId,
+                           MultipartFile file){
 
         User author = userService.getUserById(authorId);
 
@@ -31,6 +35,10 @@ public class PostService {
         post.setCategory(category);
 
         //TODO Cloudinary implementation
+        if(file != null && !file.isEmpty()) {
+            String mediaUrl = cloudinaryService.uploadFile(file);
+            post.setMediaUrl(mediaUrl);
+        }
 
         return postRepository.save(post);
     }
