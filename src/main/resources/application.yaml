@@ -1,21 +1,35 @@
 spring:
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/blog_db
+#    username: admin
+#    password: pa
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgresSQLDialect
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   datasource:
-    url: jdbc:postgresql://localhost:5432/blog_db
-    username: admin
-    password: pa
+    url: jdbc:h2:mem:testdb # In-memory database named 'testdb'
+    driver-class-name: org.h2.Driver
+    username: sa # Default H2 username
+    password: password # Default H2 password (can be left blank)
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: update # Automatically updates the database schema
+    show-sql: true # Log SQL statements to the console
 
 
 Cloudinary:
-  cloud_name: seu_cloud_name
-  api_key: sua_api_key
-  api_secret: seu_api_secret
+  cloud_name: darmuuumo
+  api_key: 239846583728934
+  api_secret: -X6nzxNRfS2bk3qP9cefs5dk8g4
 
 
 jwt:
