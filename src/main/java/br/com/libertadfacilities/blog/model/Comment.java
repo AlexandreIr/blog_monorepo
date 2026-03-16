@@ -38,4 +38,7 @@ public class Comment {
     @ManyToOne(optional = false)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @Column(nullable = false)
+    private Boolean approved = false;
 }

@@ -1,4 +1,4 @@
-package br.com.libertadfacilities.blog.controller;;
+package br.com.libertadfacilities.blog.controller;
 
 import br.com.libertadfacilities.blog.model.Comment;
 import br.com.libertadfacilities.blog.services.CommentService;
@@ -28,6 +28,6 @@ public class CommentController {
 
     @GetMapping
     public ResponseEntity<List<Comment>> getComments(@PathVariable Long postId) {
-        return ResponseEntity.ok(commentService.getCommentsByPost(postId));
+        return ResponseEntity.ok(commentService.getApprovedCommentsByPost(postId));
     }
 }
