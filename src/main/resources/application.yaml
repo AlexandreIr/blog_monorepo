@@ -18,8 +18,8 @@ spring:
   datasource:
     url: jdbc:h2:mem:testdb # In-memory database named 'testdb'
     driver-class-name: org.h2.Driver
-    username: sa # Default H2 username
-    password: password # Default H2 password (can be left blank)
+    username: ${DB_USERNAME} # Default H2 username
+    password: ${DB_PASSWORD} # Default H2 password (can be left blank)
   jpa:
     hibernate:
       ddl-auto: update # Automatically updates the database schema
@@ -27,11 +27,11 @@ spring:
 
 
 Cloudinary:
-  cloud_name: darmuuumo
-  api_key: 239846583728934
-  api_secret: -X6nzxNRfS2bk3qP9cefs5dk8g4
+  cloud_name: ${CLOUDINARY_CLOUD_NAME}
+  api_key: ${CLOUDINARY_API_KEY}
+  api_secret: ${CLOUDINARY_API_SECRET}
 
 
 jwt:
-  secret: (|:Psli#CdvTKjJ2u&)GK.7Yd42mgvl0,#Bz|F6NZ)q*>!1zj/gzu9{tdr&stltIiz46z;b8Htq_tLy;ZMB#|s
+  secret: ${JWT_SECRET}
   expiration: 43200000
