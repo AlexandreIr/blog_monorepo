@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring:
 #  datasource:
 #    url: jdbc:postgresql://localhost:5432/blog_db
@@ -10,6 +13,18 @@ spring:
 #    properties:
 #      hibernate:
 #        dialect: org.hibernate.dialect.PostgresSQLDialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${PERSONAL_EMAIL}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
   h2:
     console:
@@ -35,3 +50,4 @@ Cloudinary:
 jwt:
   secret: ${JWT_SECRET}
   expiration: 43200000
+

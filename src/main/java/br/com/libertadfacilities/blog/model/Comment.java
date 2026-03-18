@@ -41,4 +41,11 @@ public class Comment {
 
     @Column(nullable = false)
     private Boolean approved = false;
+
+    @Column(nullable = false)
+    private int likesCount = 0;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Comment parentComment;
 }

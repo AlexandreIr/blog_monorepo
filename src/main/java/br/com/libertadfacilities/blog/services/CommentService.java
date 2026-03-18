@@ -16,13 +16,22 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final EmailService emailService;
 
-    public Comment addComment(Long postId, Comment comment){
+    public Comment addComment(Long postId, Comment comment, Long parentId){
 
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new ResourceNotFoundException("Post não encontrado."));
 
         comment.setPost(post);
+
+        if(parentId != null){
+            Comment parent = commentRepository.findById(parentId)
+                    .orElseThrow(()-> new ResourceNotFoundException("Comentário não encontrado."));
+            comment.setParentComment(parent);
+
+            emailService.sendReplyEmail(parent.getAuthorEmail(), parent.getAuthorName(), comment.getAuthorName());
+        }
 
         return commentRepository.save(comment);
     }
@@ -40,6 +49,7 @@ public class CommentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Comentário não encontrado."));
 
         comment.setApproved(true);
+        emailService.sendApprovalEmail(comment.getAuthorEmail(), comment.getAuthorName());
         return commentRepository.save(comment);
     }
 
@@ -47,5 +57,6 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Comentário não encontrado."));
         commentRepository.delete(comment);
+        emailService.sendRejectionEmail(comment.getAuthorEmail(), comment.getAuthorName());
     }
 }
