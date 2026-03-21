@@ -18,10 +18,11 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<Comment> addComment(
+            @RequestParam(required = false) Long parentId,
             @PathVariable Long postId,
             @RequestBody Comment comment) {
 
-        Comment newComment = commentService.addComment(postId, comment);
+        Comment newComment = commentService.addComment(postId, comment, parentId);
         return ResponseEntity.ok(newComment);
     }
 
@@ -29,5 +30,11 @@ public class CommentController {
     @GetMapping
     public ResponseEntity<List<Comment>> getComments(@PathVariable Long postId) {
         return ResponseEntity.ok(commentService.getApprovedCommentsByPost(postId));
+    }
+
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId){
+        commentService.rejectComment(commentId);
+        return ResponseEntity.noContent().build();
     }
 }
