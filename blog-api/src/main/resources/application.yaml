@@ -1,0 +1,52 @@
+spring:
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/blog_db
+#    username: admin
+#    password: pa
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgresSQLDialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${PERSONAL_EMAIL}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    url: jdbc:h2:mem:testdb # In-memory database named 'testdb'
+    driver-class-name: org.h2.Driver
+    username: ${DB_USERNAME} # Default H2 username
+    password: ${DB_PASSWORD} # Default H2 password (can be left blank)
+  jpa:
+    hibernate:
+      ddl-auto: update # Automatically updates the database schema
+    show-sql: true # Log SQL statements to the console
+
+
+Cloudinary:
+  cloud_name: ${CLOUDINARY_CLOUD_NAME}
+  api_key: ${CLOUDINARY_API_KEY}
+  api_secret: ${CLOUDINARY_API_SECRET}
+
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 43200000
+server:
+  port: 8081
+
