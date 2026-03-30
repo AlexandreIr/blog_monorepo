@@ -1,5 +1,6 @@
 package br.com.libertadfacilities.blog.exception;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
+@Hidden
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)

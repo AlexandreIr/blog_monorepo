@@ -64,7 +64,7 @@ public class PostController {
         return ResponseEntity.ok(postService.searchPosts(keyword, page, size, sortBy, sortDirection));
     }
 
-    @DeleteMapping("{postId}")
+    @DeleteMapping("/{postId}")
     public ResponseEntity<Void> deletePost(@PathVariable Long postId, HttpServletRequest request){
         String userEmail = request.getUserPrincipal().getName();
         postService.deletePost(postId, userEmail);

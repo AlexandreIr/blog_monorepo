@@ -1,5 +1,6 @@
 package br.com.libertadfacilities.blog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,9 +28,11 @@ public class Post {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id")
+    @JsonIgnore
     private Category category;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "author_id")
+    @JsonIgnore
     private User author;
 }
