@@ -1,11 +1,15 @@
 package br.com.libertadfacilities.blog.services;
 
+import br.com.libertadfacilities.blog.exception.BusinessRuleException;
 import br.com.libertadfacilities.blog.exception.ResourceNotFoundException;
 import br.com.libertadfacilities.blog.model.Comment;
+import br.com.libertadfacilities.blog.model.CommentLike;
 import br.com.libertadfacilities.blog.model.Post;
+import br.com.libertadfacilities.blog.repositories.CommentLikeRepository;
 import br.com.libertadfacilities.blog.repositories.CommentRepository;
 import br.com.libertadfacilities.blog.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +21,8 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final EmailService emailService;
+
+    private final CommentLikeRepository commentLikeRepository;
 
     public Comment addComment(Long postId, Comment comment, Long parentId){
 
@@ -58,5 +64,22 @@ public class CommentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Comentário não encontrado."));
         commentRepository.delete(comment);
         emailService.sendRejectionEmail(comment.getAuthorEmail(), comment.getAuthorName());
+    }
+
+    public @Nullable Comment likeComment(Long commentId, String ipAddress) {
+
+        if(commentLikeRepository.existsByCommentIdAndIpAddress(commentId, ipAddress)){
+            throw new BusinessRuleException("Você já curtiu esse comentário.");
+        }
+
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(()-> new ResourceNotFoundException("Comentário não encontrado com id: "+commentId));
+
+        CommentLike newLike = new CommentLike(ipAddress, comment);
+        commentLikeRepository.save(newLike);
+
+        comment.setLikesCount(comment.getLikesCount()+1);
+
+        return commentRepository.save(comment);
     }
 }
