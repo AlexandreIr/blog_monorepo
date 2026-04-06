@@ -39,11 +39,11 @@ public class PostService {
                 .orElseThrow(()-> new ResourceNotFoundException("Categoria não encontrada"));
 
         post.setAuthor(author);
-        post.setCategory(category);
+        post.getCategories().add(category);
 
         if(file != null && !file.isEmpty()) {
             String mediaUrl = cloudinaryService.uploadFile(file);
-            post.setMediaUrl(mediaUrl);
+            post.setCoverImageUrl(mediaUrl);
         }
 
         return postRepository.save(post);
