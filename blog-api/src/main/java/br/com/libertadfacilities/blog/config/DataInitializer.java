@@ -1,7 +1,7 @@
 package br.com.libertadfacilities.blog.config;
 
-import br.com.libertadfacilities.blog.model.Role;
 import br.com.libertadfacilities.blog.model.User;
+import br.com.libertadfacilities.blog.model.enums.UserRole;
 import br.com.libertadfacilities.blog.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -28,7 +28,7 @@ public class DataInitializer {
                 admin.setEmail(adminEmail);
 
                 admin.setPassword(passwordEncoder.encode("admin123"));
-                admin.setRole(Role.ADMIN);
+                admin.setRole(UserRole.ADMIN);
 
                 log.info("Admin user created: {}", userRepository.save(admin));
             } else {

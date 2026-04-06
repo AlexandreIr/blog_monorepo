@@ -5,6 +5,7 @@ import br.com.libertadfacilities.blog.exception.ResourceNotFoundException;
 import br.com.libertadfacilities.blog.model.Comment;
 import br.com.libertadfacilities.blog.model.CommentLike;
 import br.com.libertadfacilities.blog.model.Post;
+import br.com.libertadfacilities.blog.model.enums.CommentStatus;
 import br.com.libertadfacilities.blog.repositories.CommentLikeRepository;
 import br.com.libertadfacilities.blog.repositories.CommentRepository;
 import br.com.libertadfacilities.blog.repositories.PostRepository;
@@ -43,18 +44,18 @@ public class CommentService {
     }
 
     public List<Comment> getApprovedCommentsByPost(Long postId) {
-        return commentRepository.findByPostIdAndApprovedTrue(postId);
+        return commentRepository.findByPostIdAndStatus(postId, CommentStatus.APPROVED);
     }
 
-    public List<Comment> getPendingComments() {
-        return commentRepository.findByApprovedFalse();
+    public List<Comment> getPendingComments(Long postId) {
+        return commentRepository.findByPostIdAndStatus(postId, CommentStatus.PENDING);
     }
 
     public Comment approveComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Comentário não encontrado."));
 
-        comment.setApproved(true);
+        comment.setStatus(true);
         emailService.sendApprovalEmail(comment.getAuthorEmail(), comment.getAuthorName());
         return commentRepository.save(comment);
     }
