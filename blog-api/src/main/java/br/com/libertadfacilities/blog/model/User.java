@@ -1,17 +1,17 @@
 package br.com.libertadfacilities.blog.model;
 
+import br.com.libertadfacilities.blog.model.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name="tb_users")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class User {
+@Getter
+@Setter
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,5 +28,5 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role = Role.AUTHOR;
+    private UserRole role = UserRole.EDITOR;
 }

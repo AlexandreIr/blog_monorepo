@@ -16,8 +16,8 @@ public class AdminController {
     private final CommentService commentService;
 
     @GetMapping("/pending")
-    public ResponseEntity<List<Comment>> getPendingComments(){
-        return ResponseEntity.ok(commentService.getPendingComments());
+    public ResponseEntity<List<Comment>> getPendingComments(Long postId) {
+        return ResponseEntity.ok(commentService.getPendingComments(postId));
     }
 
     @PutMapping("/{id}/approve")
