@@ -7,6 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostRequestDTO {
     private String title;
     private String content;
+    private String summary;
+    private String metaTitle;
+    private String metaDescription;
     private Long categoryId;
     private MultipartFile file;
 }

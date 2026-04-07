@@ -55,7 +55,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Comentário não encontrado."));
 
-        comment.setStatus(true);
+        comment.setStatus(CommentStatus.APPROVED);
         emailService.sendApprovalEmail(comment.getAuthorEmail(), comment.getAuthorName());
         return commentRepository.save(comment);
     }

@@ -1,0 +1,11 @@
+### POST request to example server
+POST http://localhost:8081/api/admin/category
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsaWJlcmFkTENTQGdtYWlsLmNvbSIsImlhdCI6MTc3NTU3NDM3NywiZXhwIjoxNzc1NjE3NTc3fQ.s9tcgCgvvGkmtV8owUyJYJB9tjkaU9rrYc7yp5RIE6o
+
+{
+  "name": "Tecnologia",
+  "description": "Categoria dedicada a tecnolgia no geal",
+  "slug": "tech"
+}
+###

@@ -1,0 +1,40 @@
+### POST request to example server
+POST http://localhost:8081/api/admin/post
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsaWJlcmFkTENTQGdtYWlsLmNvbSIsImlhdCI6MTc3NTU3NjkyOSwiZXhwIjoxNzc1NjIwMTI5fQ.Z7oumYbtESl6axzdzDsES3SDmzwQqB1JNULsYDr2dlE
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="title"
+
+Meu primeiro post
+--boundary123
+Content-Disposition: form-data; name="content"
+
+Conteúdo completo do post
+--boundary123
+Content-Disposition: form-data; name="summary"
+
+Resumo do post
+--boundary123
+Content-Disposition: form-data; name="metaTitle"
+
+Meta título
+--boundary123
+Content-Disposition: form-data; name="metaDescription"
+
+Meta descrição
+--boundary123
+Content-Disposition: form-data; name="categoryIds"
+
+1
+--boundary123--
+
+
+  title: Como um blog pode gerar leads para empresas
+  summary: Entenda como um blog bem estruturado ajuda na geração de leads.
+  content: Conteúdo completo do artigo aqui...
+  metaTitle: Blog e geração de leads
+  metaDescription: "Como um blog ajuda empresas a gerar leads
+  categoryId: 1
+
+###

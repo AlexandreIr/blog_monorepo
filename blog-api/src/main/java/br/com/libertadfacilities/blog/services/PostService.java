@@ -56,7 +56,7 @@ public class PostService {
 
     public Page<Post> getPostsByCategory(Long categoryId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        return postRepository.findByCategoryId(categoryId, pageable);
+        return postRepository.findByCategories(categoryId, pageable);
     }
 
     public void deletePost(Long postId, String email){
@@ -65,7 +65,7 @@ public class PostService {
         Post post = postRepository.findById(postId)
                         .orElseThrow(()-> new ResourceNotFoundException("Post não encontrado."));
         if(!post.getAuthor().equals(user)) {
-            throw new BusinessRuleException("Usuário não pode apagar post de outro usuário.");
+            throw new BusinessRuleException("Você não pode apagar posts de outro usuário.");
         }
         postRepository.deleteById(postId);
     }

@@ -1,6 +1,7 @@
 package br.com.libertadfacilities.blog.model;
 
 
+import br.com.libertadfacilities.blog.model.enums.CommentStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -43,7 +44,8 @@ public class Comment extends BaseEntity {
     private Post post;
 
     @Column(nullable = false, length = 20)
-    private Boolean status = false;
+    @Enumerated(EnumType.STRING)
+    private CommentStatus status = CommentStatus.PENDING;
 
     @Column(nullable = false)
     private int likesCount = 0;

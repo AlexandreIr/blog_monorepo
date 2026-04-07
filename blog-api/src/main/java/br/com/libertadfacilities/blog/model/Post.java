@@ -30,14 +30,12 @@ public class Post extends  BaseEntity {
     @Column(nullable = false, length = 300)
     private String summary;
 
-    @Lob
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @Column(length = 500)
     private String coverImageUrl;
 
-    @Column(length = 255)
     private String metaTitle;
 
     @Column(length = 300)

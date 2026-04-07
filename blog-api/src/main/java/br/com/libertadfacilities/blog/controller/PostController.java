@@ -21,21 +21,6 @@ public class PostController {
     private final PostService postService;
 
 
-    @PostMapping
-    public ResponseEntity<Post> createPost(
-            @ModelAttribute PostRequestDTO request
-    ){
-
-        String userEmail = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getName();
-
-        Post post = new Post();
-        post.setTitle(request.getTitle());
-        post.setContent(request.getContent());
-
-        Post createdPost = postService.createPost(post, userEmail, request.getCategoryId(), request.getFile());
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
-    }
-
     @GetMapping
     public ResponseEntity<Page<Post>> getAllPosts(
             @RequestParam(defaultValue = "0") int page,

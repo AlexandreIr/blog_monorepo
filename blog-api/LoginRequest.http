@@ -1,0 +1,9 @@
+### POST request to login route
+POST http://localhost:8081/api/auth/login
+Content-Type: application/json
+
+
+{
+    "email": "liberadLCS@gmail.com",
+    "password": "admin123"
+}
