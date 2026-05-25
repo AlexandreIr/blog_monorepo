@@ -1,8 +1,7 @@
 package br.com.libertadfacilities.blog.repositories;
 
-import br.com.libertadfacilities.blog.model.Comment;
-import br.com.libertadfacilities.blog.model.enums.CommentStatus;
-import br.com.libertadfacilities.blog.model.enums.PostStatus;
+import br.com.libertadfacilities.blog.entity.Comment;
+import br.com.libertadfacilities.blog.enums.CommentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,9 +1,7 @@
-package br.com.libertadfacilities.blog.model;
+package br.com.libertadfacilities.blog.entity;
 
-import br.com.libertadfacilities.blog.model.enums.PostStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import br.com.libertadfacilities.blog.enums.PostStatus;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

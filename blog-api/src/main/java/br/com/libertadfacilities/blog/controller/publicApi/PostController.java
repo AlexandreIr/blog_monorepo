@@ -1,17 +1,12 @@
-package br.com.libertadfacilities.blog.controller;
+package br.com.libertadfacilities.blog.controller.publicApi;
 
-import br.com.libertadfacilities.blog.dto.PostRequestDTO;
-import br.com.libertadfacilities.blog.model.Post;
+import br.com.libertadfacilities.blog.entity.Post;
 import br.com.libertadfacilities.blog.services.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/posts")

@@ -1,7 +1,7 @@
 package br.com.libertadfacilities.blog.repositories;
 
-import br.com.libertadfacilities.blog.model.Post;
-import br.com.libertadfacilities.blog.model.enums.PostStatus;
+import br.com.libertadfacilities.blog.entity.Post;
+import br.com.libertadfacilities.blog.enums.PostStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

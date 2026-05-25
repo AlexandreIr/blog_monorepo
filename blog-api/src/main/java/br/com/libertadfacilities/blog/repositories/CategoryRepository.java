@@ -1,6 +1,6 @@
 package br.com.libertadfacilities.blog.repositories;
 
-import br.com.libertadfacilities.blog.model.Category;
+import br.com.libertadfacilities.blog.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

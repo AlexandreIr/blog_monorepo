@@ -1,21 +1,20 @@
-package br.com.libertadfacilities.blog.model;
+package br.com.libertadfacilities.blog.entity;
 
 
-import br.com.libertadfacilities.blog.model.enums.CommentStatus;
+import br.com.libertadfacilities.blog.enums.CommentStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_comment")
 @Getter
 @Setter
+@Table(name = "tb_comment")
 public class Comment extends BaseEntity {
 
     @Id
@@ -54,3 +53,4 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "parent_id")
     private Comment parentComment;
 }
+

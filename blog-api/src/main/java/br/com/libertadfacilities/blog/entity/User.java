@@ -1,6 +1,6 @@
-package br.com.libertadfacilities.blog.model;
+package br.com.libertadfacilities.blog.entity;
 
-import br.com.libertadfacilities.blog.model.enums.UserRole;
+import br.com.libertadfacilities.blog.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;

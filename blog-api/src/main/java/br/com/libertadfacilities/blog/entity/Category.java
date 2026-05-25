@@ -1,4 +1,4 @@
-package br.com.libertadfacilities.blog.model;
+package br.com.libertadfacilities.blog.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

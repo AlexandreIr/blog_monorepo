@@ -1,9 +1,8 @@
-package br.com.libertadfacilities.blog.controller;
+package br.com.libertadfacilities.blog.controller.admin;
 
-import br.com.libertadfacilities.blog.dto.PostRequestDTO;
-import br.com.libertadfacilities.blog.model.Category;
-import br.com.libertadfacilities.blog.model.Comment;
-import br.com.libertadfacilities.blog.model.Post;
+import br.com.libertadfacilities.blog.entity.Category;
+import br.com.libertadfacilities.blog.entity.Comment;
+import br.com.libertadfacilities.blog.entity.Post;
 import br.com.libertadfacilities.blog.services.CategoryService;
 import br.com.libertadfacilities.blog.services.CommentService;
 import br.com.libertadfacilities.blog.services.PostService;

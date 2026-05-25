@@ -2,9 +2,9 @@ package br.com.libertadfacilities.blog.services;
 
 import br.com.libertadfacilities.blog.exception.BusinessRuleException;
 import br.com.libertadfacilities.blog.exception.ResourceNotFoundException;
-import br.com.libertadfacilities.blog.model.Category;
-import br.com.libertadfacilities.blog.model.Post;
-import br.com.libertadfacilities.blog.model.User;
+import br.com.libertadfacilities.blog.entity.Category;
+import br.com.libertadfacilities.blog.entity.Post;
+import br.com.libertadfacilities.blog.entity.User;
 import br.com.libertadfacilities.blog.repositories.CategoryRepository;
 import br.com.libertadfacilities.blog.repositories.PostRepository;
 import br.com.libertadfacilities.blog.repositories.UserRepository;

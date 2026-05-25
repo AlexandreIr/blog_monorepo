@@ -1,12 +1,15 @@
 package br.com.libertadfacilities.blog.services;
 
 import br.com.libertadfacilities.blog.exception.BusinessRuleException;
-import br.com.libertadfacilities.blog.model.Category;
+import br.com.libertadfacilities.blog.entity.Category;
+import br.com.libertadfacilities.blog.exception.ResourceNotFoundException;
 import br.com.libertadfacilities.blog.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +36,18 @@ public class CategoryService {
         return categoryRepository.findById(id).orElseThrow(
                 ()-> new RuntimeException("Categoria não encontrada com o id: "+id)
         );
+    }
+
+    public Set<Category> resolveCategories(Set<Long> categoryIds) {
+        Set<Category> categories = categoryIds.stream()
+                .map(id -> categoryRepository.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada: " + id)))
+                .collect(Collectors.toSet());
+
+        if (categories.isEmpty()) {
+            throw new BusinessRuleException("Informe pelo menos uma categoria");
+        }
+
+        return categories;
     }
 }

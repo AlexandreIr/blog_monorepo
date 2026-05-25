@@ -1,4 +1,4 @@
-package br.com.libertadfacilities.blog.model;
+package br.com.libertadfacilities.blog.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

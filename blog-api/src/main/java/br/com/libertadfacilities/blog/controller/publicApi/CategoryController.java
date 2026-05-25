@@ -1,6 +1,6 @@
-package br.com.libertadfacilities.blog.controller;
+package br.com.libertadfacilities.blog.controller.publicApi;
 
-import br.com.libertadfacilities.blog.model.Category;
+import br.com.libertadfacilities.blog.entity.Category;
 import br.com.libertadfacilities.blog.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -2,10 +2,10 @@ package br.com.libertadfacilities.blog.services;
 
 import br.com.libertadfacilities.blog.exception.BusinessRuleException;
 import br.com.libertadfacilities.blog.exception.ResourceNotFoundException;
-import br.com.libertadfacilities.blog.model.Comment;
-import br.com.libertadfacilities.blog.model.CommentLike;
-import br.com.libertadfacilities.blog.model.Post;
-import br.com.libertadfacilities.blog.model.enums.CommentStatus;
+import br.com.libertadfacilities.blog.entity.Comment;
+import br.com.libertadfacilities.blog.entity.CommentLike;
+import br.com.libertadfacilities.blog.entity.Post;
+import br.com.libertadfacilities.blog.enums.CommentStatus;
 import br.com.libertadfacilities.blog.repositories.CommentLikeRepository;
 import br.com.libertadfacilities.blog.repositories.CommentRepository;
 import br.com.libertadfacilities.blog.repositories.PostRepository;
@@ -25,9 +25,9 @@ public class CommentService {
 
     private final CommentLikeRepository commentLikeRepository;
 
-    public Comment addComment(Long postId, Comment comment, Long parentId){
+    public Comment addComment(String slug, Comment comment, Long parentId){
 
-        Post post = postRepository.findById(postId)
+        Post post = postRepository.findBySlug(slug)
                 .orElseThrow(()-> new ResourceNotFoundException("Post não encontrado."));
 
         comment.setPost(post);
