@@ -38,16 +38,4 @@ public class CategoryService {
         );
     }
 
-    public Set<Category> resolveCategories(Set<Long> categoryIds) {
-        Set<Category> categories = categoryIds.stream()
-                .map(id -> categoryRepository.findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada: " + id)))
-                .collect(Collectors.toSet());
-
-        if (categories.isEmpty()) {
-            throw new BusinessRuleException("Informe pelo menos uma categoria");
-        }
-
-        return categories;
-    }
 }

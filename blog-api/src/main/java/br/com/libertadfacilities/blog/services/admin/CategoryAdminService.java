@@ -35,6 +35,7 @@ public class CategoryAdminService {
 
         Category category = new Category();
         category.setName(request.name().trim());
+        category.setDescription(request.description().trim());
         category.setSlug(slug);
 
         return categoryMapper.toResponse(categoryRepository.save(category));

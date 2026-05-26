@@ -29,5 +29,6 @@ public record CreatePostRequest (
 
         @NotEmpty(message = "Informe pelo menos uma categoria")
         Set<Long> categoryIds
+
 ) {
 }

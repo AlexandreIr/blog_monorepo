@@ -2,43 +2,67 @@ package br.com.libertadfacilities.blog.controller.admin;
 
 
 import br.com.libertadfacilities.blog.dto.request.CreatePostRequest;
+import br.com.libertadfacilities.blog.dto.request.UpdatePostRequest;
 import br.com.libertadfacilities.blog.dto.response.PostResponse;
-import br.com.libertadfacilities.blog.entity.Category;
-import br.com.libertadfacilities.blog.entity.Post;
 import br.com.libertadfacilities.blog.entity.User;
 import br.com.libertadfacilities.blog.exception.ResourceNotFoundException;
-import br.com.libertadfacilities.blog.mapper.PostMapper;
-import br.com.libertadfacilities.blog.repositories.PostRepository;
 import br.com.libertadfacilities.blog.repositories.UserRepository;
-import br.com.libertadfacilities.blog.services.CategoryService;
+import br.com.libertadfacilities.blog.services.admin.PostAdminService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Objects;
 
-@Service
+@RestController
+@RequestMapping("/api/admin/posts")
 @RequiredArgsConstructor
 public class PostAdminController {
 
-    private final PostRepository postRepository;
-    private final CategoryService categoryService;
     private final UserRepository userRepository;
-    private final PostMapper mapper;
+    private final PostAdminService postAdminService;
 
-    public PostResponse create(CreatePostRequest request){
-        Set<Category> categories = categoryService.resolveCategories(request.categoryIds());
-        Post post = mapper.toPost(request, getAuthenticatedUser(), categories);
-
-        Post saved = postRepository.save(post);
-        return mapper.toResponse(saved);
-
+    @PostMapping
+    public ResponseEntity<PostResponse> create(@RequestBody @Valid CreatePostRequest request){
+       return ResponseEntity.status(HttpStatus.CREATED).body(postAdminService.create(request, getAuthenticatedUser()));
     }
 
     private User getAuthenticatedUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getName();
 
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário autenticado não encontrado"));
     }
+
+    @GetMapping
+    public ResponseEntity<List<PostResponse>> findAll() {
+        return ResponseEntity.ok(postAdminService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(postAdminService.findById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PostResponse> update(@PathVariable Long id,
+                                               @RequestBody @Valid UpdatePostRequest request) {
+        return ResponseEntity.ok(postAdminService.update(id, request));
+    }
+
+    @PatchMapping("/{id}/publish")
+    public ResponseEntity<PostResponse> publish(@PathVariable Long id) {
+        return ResponseEntity.ok(postAdminService.publish(id));
+    }
+
+    @PatchMapping("/{id}/unpublish")
+    public ResponseEntity<PostResponse> unpublish(@PathVariable Long id) {
+        return ResponseEntity.ok(postAdminService.unpublish(id));
+    }
+
 }

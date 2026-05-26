@@ -4,6 +4,7 @@ import br.com.libertadfacilities.blog.entity.Post;
 import br.com.libertadfacilities.blog.enums.PostStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,10 +21,36 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findByStatus(PostStatus status, Pageable pageable);
 
-    Page<Post> findByCategories(Long categoryId, Pageable pageable);
+    @EntityGraph(attributePaths = {"author", "categories"})
+    Optional<Post> findBySlugAndStatus(String slug, PostStatus status);
 
-    Page<Post> findByAuthorId(Long authorId, Pageable pageable);
+    @EntityGraph(attributePaths = {"author", "categories"})
+    Page<Post> findAllByStatus(PostStatus status, Pageable pageable);
 
-    @Query("SELECT p FROM Post p WHERE LOWER(p.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-    Page<Post> searchPosts(@Param("keyword") String keyword, Pageable pageable);
+    @EntityGraph(attributePaths = {"author", "categories"})
+    @Query("""
+           SELECT DISTINCT p
+           FROM Post p
+           JOIN p.categories c
+           WHERE p.status = :status
+             AND c.slug = :categorySlug
+           """)
+    Page<Post> findPublishedByCategorySlug(@Param("categorySlug") String categorySlug,
+                                           @Param("status") PostStatus status,
+                                           Pageable pageable);
+
+    @EntityGraph(attributePaths = {"author", "categories"})
+    @Query("""
+           SELECT DISTINCT p
+           FROM Post p
+           WHERE p.status = :status
+             AND (
+                 LOWER(p.title) LIKE LOWER(CONCAT('%', :query, '%'))
+                 OR LOWER(p.summary) LIKE LOWER(CONCAT('%', :query, '%'))
+                 OR LOWER(p.content) LIKE LOWER(CONCAT('%', :query, '%'))
+             )
+           """)
+    Page<Post> searchPublished(@Param("query") String query,
+                               @Param("status") PostStatus status,
+                               Pageable pageable);
 }

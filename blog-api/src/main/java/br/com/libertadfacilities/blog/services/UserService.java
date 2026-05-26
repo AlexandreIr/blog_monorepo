@@ -15,14 +15,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
-    public Long createUser(User user){
+    public void createUser(User user){
         if(userRepository.existsByEmail(user.getEmail())) {
             throw new BusinessRuleException("E-mail já cadastrado");
         }
 
         user.setPassword(encoder.encode(user.getPassword()));
 
-        return userRepository.save(user).getId();
+      userRepository.save(user);
     }
 
     public User getUserById(Long id){

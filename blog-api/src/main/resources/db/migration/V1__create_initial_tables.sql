@@ -11,7 +11,7 @@ CREATE TABLE tb_users (
 CREATE TABLE tb_category (
                             id BIGSERIAL PRIMARY KEY,
                             name VARCHAR(100) NOT NULL UNIQUE,
-                            description TEXT NOT NULL,
+                            description TEXT,
                             slug VARCHAR(120) NOT NULL UNIQUE,
                             created_at TIMESTAMP NOT NULL,
                             updated_at TIMESTAMP NOT NULL

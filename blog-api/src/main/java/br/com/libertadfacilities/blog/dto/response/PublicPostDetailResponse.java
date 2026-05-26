@@ -1,11 +1,9 @@
 package br.com.libertadfacilities.blog.dto.response;
 
-import br.com.libertadfacilities.blog.enums.PostStatus;
-
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public record PostResponse(
+public record PublicPostDetailResponse(
         Long id,
         String title,
         String slug,
@@ -14,7 +12,6 @@ public record PostResponse(
         String coverImageUrl,
         String metaTitle,
         String metaDescription,
-        PostStatus status,
         LocalDateTime publishedAt,
         String authorName,
         Set<CategoryResponse> categories
