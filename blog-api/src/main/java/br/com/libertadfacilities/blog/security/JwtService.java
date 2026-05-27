@@ -1,6 +1,8 @@
 package br.com.libertadfacilities.blog.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -33,20 +35,35 @@ public class JwtService {
                 .compact();
     }
 
-    public String extractUsername(String token){
+    public String extractUsername(String token) throws JwtException {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public boolean isTokenExpired(String token, UserDetails userDetails){
-        return extractClaim(token, Claims::getExpiration).before(new Date());
+    public boolean isTokenExpired(String token) {
+        try {
+            return extractClaim(token, Claims::getExpiration).before(new Date());
+        } catch (ExpiredJwtException e) {
+            return true;
+        } catch (JwtException e) {
+            return true;
+        }
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> resolver) {
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        try {
+            String username = extractUsername(token);
+            return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        } catch (JwtException e) {
+            return false;
+        }
+    }
+
+    private <T> T extractClaim(String token, Function<Claims, T> resolver) throws JwtException {
         Claims claims = extractAllClaims(token);
         return resolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
+    private Claims extractAllClaims(String token) throws JwtException {
         return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
