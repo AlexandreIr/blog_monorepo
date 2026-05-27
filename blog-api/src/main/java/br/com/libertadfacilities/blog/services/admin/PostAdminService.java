@@ -2,6 +2,7 @@ package br.com.libertadfacilities.blog.services.admin;
 
 import br.com.libertadfacilities.blog.dto.request.CreatePostRequest;
 import br.com.libertadfacilities.blog.dto.request.UpdatePostRequest;
+import br.com.libertadfacilities.blog.dto.response.PageResponse;
 import br.com.libertadfacilities.blog.dto.response.PostResponse;
 import br.com.libertadfacilities.blog.entity.Category;
 import br.com.libertadfacilities.blog.entity.Post;
@@ -14,7 +15,12 @@ import br.com.libertadfacilities.blog.repositories.CategoryRepository;
 import br.com.libertadfacilities.blog.repositories.PostRepository;
 import br.com.libertadfacilities.blog.util.SlugUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,11 +49,26 @@ public class PostAdminService {
 
     }
 
-    public List<PostResponse> findAll(){
-        return postRepository.findAll()
-                .stream()
-                .map(mapper::toResponse)
-                .toList();
+    @Transactional(readOnly = true)
+    public PageResponse<PostResponse> findAll(PostStatus status, String query, int page, int size){
+        Pageable pageable = PageRequest.of(
+                Math.max(page, 0),
+                Math.min(Math.max(size,1),50),
+                Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        String normalizeQuery = query==null?null:query.trim();
+
+        Page<Post> posts = postRepository.findAdminPosts(status, normalizeQuery, pageable);
+
+        return new PageResponse<>(
+                posts.getContent().stream().map(mapper::toResponse).toList(),
+                posts.getNumber(),
+                posts.getSize(),
+                posts.getTotalElements(),
+                posts.getTotalPages(),
+                posts.isFirst(),
+                posts.isLast()
+        );
     }
 
     public PostResponse findById(Long id) {

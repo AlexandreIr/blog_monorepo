@@ -53,4 +53,18 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> searchPublished(@Param("query") String query,
                                @Param("status") PostStatus status,
                                Pageable pageable);
+
+    @EntityGraph(attributePaths = {"author", "categories"})
+    @Query("""
+           SELECT p
+           FROM Post p
+           WHERE (:status IS NULL OR p.status = :status)
+             AND (
+                 :query IS NULL OR :query = ''
+                 OR LOWER(p.title) LIKE LOWER(CONCAT('%', :query, '%'))
+             )
+           """)
+    Page<Post> findAdminPosts(@Param("status") PostStatus status,
+                              @Param("query") String query,
+                              Pageable pageable);
 }

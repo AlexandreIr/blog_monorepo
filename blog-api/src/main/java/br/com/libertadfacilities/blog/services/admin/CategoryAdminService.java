@@ -4,6 +4,7 @@ package br.com.libertadfacilities.blog.services.admin;
 import br.com.libertadfacilities.blog.dto.request.CreateCategoryRequest;
 import br.com.libertadfacilities.blog.dto.request.UpdateCategoryRequest;
 import br.com.libertadfacilities.blog.dto.response.CategoryResponse;
+import br.com.libertadfacilities.blog.dto.response.PageResponse;
 import br.com.libertadfacilities.blog.entity.Category;
 import br.com.libertadfacilities.blog.exception.BusinessRuleException;
 import br.com.libertadfacilities.blog.exception.ResourceNotFoundException;
@@ -11,7 +12,12 @@ import br.com.libertadfacilities.blog.mapper.CategoryMapper;
 import br.com.libertadfacilities.blog.repositories.CategoryRepository;
 import br.com.libertadfacilities.blog.util.SlugUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,17 +41,33 @@ public class CategoryAdminService {
 
         Category category = new Category();
         category.setName(request.name().trim());
-        category.setDescription(request.description().trim());
+//        category.setDescription(request.description().trim());
         category.setSlug(slug);
 
         return categoryMapper.toResponse(categoryRepository.save(category));
     }
 
-    public List<CategoryResponse> findAll(){
-        return categoryRepository.findAll()
-                .stream()
-                .map(categoryMapper::toResponse)
-                .toList();
+    @Transactional(readOnly = true)
+    public PageResponse<CategoryResponse> findAll(String query, int page, int size){
+        Pageable pageable = PageRequest.of(
+                Math.max(page, 0),
+                Math.min(Math.max(size, 1), 50),
+                Sort.by(Sort.Direction.ASC, "name")
+        );
+
+        Page<Category> categories = (query == null || query.trim().isBlank())
+                ? categoryRepository.findAll(pageable)
+                : categoryRepository.findByNameContainingIgnoreCase(query.trim(), pageable);
+
+        return new PageResponse<>(
+                categories.getContent().stream().map(categoryMapper::toResponse).toList(),
+                categories.getNumber(),
+                categories.getSize(),
+                categories.getTotalElements(),
+                categories.getTotalPages(),
+                categories.isFirst(),
+                categories.isLast()
+        );
     }
 
     public CategoryResponse update (Long id, UpdateCategoryRequest request){

@@ -3,6 +3,7 @@ package br.com.libertadfacilities.blog.controller.admin;
 import br.com.libertadfacilities.blog.dto.request.CreateCategoryRequest;
 import br.com.libertadfacilities.blog.dto.request.UpdateCategoryRequest;
 import br.com.libertadfacilities.blog.dto.response.CategoryResponse;
+import br.com.libertadfacilities.blog.dto.response.PageResponse;
 import br.com.libertadfacilities.blog.services.admin.CategoryAdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,12 @@ public class CategoryAdminController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponse>> findAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(categoryAdminService.findAll());
+    public ResponseEntity<PageResponse<CategoryResponse>> findAll(
+            @RequestParam(required = false) String query,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        return ResponseEntity.status(HttpStatus.OK).body(categoryAdminService.findAll(query, page, size));
     }
 
     @PutMapping("/{id}")

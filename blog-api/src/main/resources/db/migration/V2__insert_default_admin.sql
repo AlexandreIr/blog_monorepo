@@ -2,7 +2,7 @@ INSERT INTO tb_users (name, email, password, role, created_at, updated_at)
 VALUES (
            'Administrador',
            'admin@empresa.com',
-           '$2a$10$DowJonesxYx1V8X3r0xR5nO4JxYxQ7bLxM6sKfQ9mM0Yw2iV3e6QmK',
+           '$2a$10$/O/Z6E/FSRgkuRR/.4XCiOafMgVOyrqgpBOY/KYmxWPueswC9Ap6e',
            'ADMIN',
            NOW(),
            NOW()

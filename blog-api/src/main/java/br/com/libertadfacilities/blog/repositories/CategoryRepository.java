@@ -1,6 +1,8 @@
 package br.com.libertadfacilities.blog.repositories;
 
 import br.com.libertadfacilities.blog.entity.Category;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +17,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     boolean existsByName(String name);
     boolean existsBySlug(String slug);
+
+    Page<Category> findByNameContainingIgnoreCase(String name, Pageable pageable);
 }

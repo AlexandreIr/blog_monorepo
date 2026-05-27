@@ -3,11 +3,14 @@ package br.com.libertadfacilities.blog.controller.admin;
 
 import br.com.libertadfacilities.blog.dto.request.CreatePostRequest;
 import br.com.libertadfacilities.blog.dto.request.UpdatePostRequest;
+import br.com.libertadfacilities.blog.dto.response.PageResponse;
 import br.com.libertadfacilities.blog.dto.response.PostResponse;
 import br.com.libertadfacilities.blog.entity.User;
+import br.com.libertadfacilities.blog.enums.PostStatus;
 import br.com.libertadfacilities.blog.exception.ResourceNotFoundException;
 import br.com.libertadfacilities.blog.repositories.UserRepository;
 import br.com.libertadfacilities.blog.services.admin.PostAdminService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,9 +42,15 @@ public class PostAdminController {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário autenticado não encontrado"));
     }
 
+    @Operation(summary = "Listar posts com paginação e filtros")
     @GetMapping
-    public ResponseEntity<List<PostResponse>> findAll() {
-        return ResponseEntity.ok(postAdminService.findAll());
+    public ResponseEntity<PageResponse<PostResponse>> findAll(
+            @RequestParam(required = false) PostStatus status,
+            @RequestParam(required = false) String query,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(postAdminService.findAll(status, query, page, size));
     }
 
     @GetMapping("/{id}")

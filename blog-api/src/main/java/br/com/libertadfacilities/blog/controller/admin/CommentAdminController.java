@@ -1,12 +1,11 @@
 package br.com.libertadfacilities.blog.controller.admin;
 
 import br.com.libertadfacilities.blog.dto.response.CommentResponse;
+import br.com.libertadfacilities.blog.dto.response.PageResponse;
 import br.com.libertadfacilities.blog.services.admin.CommentAdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/admin/comments")
@@ -16,8 +15,11 @@ public class CommentAdminController {
     private final CommentAdminService commentAdminService;
 
     @GetMapping("/pending")
-    public ResponseEntity<List<CommentResponse>> listPending() {
-        return ResponseEntity.ok(commentAdminService.listPending());
+    public ResponseEntity<PageResponse<CommentResponse>> listPending(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(commentAdminService.listPending(page,  size));
     }
 
     @PatchMapping("/{id}/approve")
