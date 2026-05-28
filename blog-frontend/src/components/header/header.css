@@ -1,0 +1,78 @@
+.navbar {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 260px 1fr 320px;
+  align-items: center;
+  gap: 32px;
+  padding: 20px 24px;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--blue-dark);
+}
+
+.logo-area small {
+  display: block;
+  color: var(--gray);
+  margin-top: 2px;
+}
+
+.logo-icon {
+  width: 68px;
+  height: 48px;
+  border: 2px solid var(--blue-dark);
+  color: var(--blue-dark);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  letter-spacing: 3px;
+  border-radius: 4px;
+}
+
+.navbar nav {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  font-weight: 700;
+  color: var(--blue-dark);
+}
+
+.navbar nav a {
+  position: relative;
+  cursor: pointer;
+}
+
+.navbar nav a.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -14px;
+  height: 3px;
+  background: var(--red);
+  border-radius: 999px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 14px;
+  height: 46px;
+}
+
+.search-box input {
+  border: 0;
+  outline: 0;
+  width: 100%;
+  font-size: 0.95rem;
+}
