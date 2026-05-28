@@ -3,10 +3,12 @@ package br.com.libertadfacilities.blog.controller.publicApi;
 import br.com.libertadfacilities.blog.entity.Category;
 import br.com.libertadfacilities.blog.services.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -15,11 +17,11 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-
-
     @GetMapping
     public ResponseEntity<List<Category>> getAllCategories(){
-        return ResponseEntity.ok(categoryService.getAllCategories());
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
+                .body(categoryService.getAllCategories());
     }
 
     @GetMapping("/{id}")

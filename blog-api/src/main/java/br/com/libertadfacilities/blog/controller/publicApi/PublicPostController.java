@@ -5,8 +5,11 @@ import br.com.libertadfacilities.blog.dto.response.PublicPostDetailResponse;
 import br.com.libertadfacilities.blog.dto.response.PublicPostSummaryResponse;
 import br.com.libertadfacilities.blog.services.publicApi.PublicPostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping
@@ -20,7 +23,9 @@ public class PublicPostController {
                 @RequestParam(defaultValue = "0") int page,
                 @RequestParam(defaultValue = "10") int size
         ) {
-            return ResponseEntity.ok(publicPostService.listPublished(page, size));
+            return ResponseEntity .ok()
+                    .cacheControl(CacheControl.maxAge(5, TimeUnit.MINUTES).cachePublic())
+                    .body(publicPostService.listPublished(page, size));
         }
 
         @GetMapping("/posts/{slug}")
