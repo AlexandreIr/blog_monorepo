@@ -21,7 +21,7 @@ export default function AdminComments() {
     async function loadComments() {
         try {
             const data = await adminRequest<PagedResponse<Comment> | Comment[]>(
-                "/admin/comments?status=PENDING"
+                `/admin/comments/pending`
             );
 
             if (Array.isArray(data)) {

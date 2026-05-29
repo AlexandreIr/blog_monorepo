@@ -53,10 +53,8 @@ export default function LoginPage() {
         <main className="login-page">
             <section className="login-card">
                 <div className="login-brand">
-                    <div className="logo-icon">LCS</div>
                     <div>
-                        <strong>Libertad Comercial</strong>
-                        <small>Painel administrativo</small>
+                        <img src="../logo-header.png" alt="logo" width = "150px" />
                     </div>
                 </div>
 

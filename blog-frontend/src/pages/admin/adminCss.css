@@ -2,16 +2,16 @@
     min-height: 100vh;
     display: grid;
     place-items: center;
-    background:
-            linear-gradient(135deg, rgba(0, 48, 135, 0.96), rgba(0, 94, 184, 0.88)),
-            #003087;
+    background: #04235c;
+    background: linear-gradient(21deg, rgba(4, 35, 92, 1) 0%, rgba(255, 255, 255, 1) 100%);
     padding: 24px;
 }
 
 .login-card {
     width: 100%;
-    max-width: 430px;
-    background: white;
+    max-width: 450px;
+    background: #E9E6D7;
+    background: radial-gradient(circle, rgba(233, 230, 215, 1) 0%, rgba(255, 255, 255, 1) 100%);
     border-radius: 10px;
     padding: 34px;
     box-shadow: var(--shadow);
@@ -23,11 +23,6 @@
     gap: 14px;
     color: var(--blue-dark);
     margin-bottom: 28px;
-}
-
-.login-brand small {
-    display: block;
-    color: var(--muted);
 }
 
 .login-card h1 {
@@ -57,6 +52,10 @@
     padding: 13px;
     border-radius: 4px;
     font-size: 1rem;
+}
+
+.login-card button{
+    margin-top: 1rem
 }
 
 .login-card button,
@@ -287,4 +286,310 @@
     .admin-main {
         padding: 24px;
     }
+}
+
+.secondary-admin-button {
+  border: 1px solid var(--border) !important;
+  background: white !important;
+  color: var(--blue-dark) !important;
+}
+
+.secondary-admin-button:hover {
+  background: var(--soft-blue) !important;
+}
+
+.secondary-admin-button.full {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.post-editor-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  align-items: start;
+}
+
+.post-editor-main,
+.post-editor-sidebar,
+.admin-form-section,
+.publish-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-editor-main,
+.post-editor-sidebar {
+  gap: 18px;
+}
+
+.admin-form-section,
+.publish-box {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 22px;
+  box-shadow: 0 8px 28px rgba(16, 24, 40, 0.04);
+}
+
+.admin-form-section label {
+  color: var(--blue-dark);
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.admin-form-section input,
+.admin-form-section textarea {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 13px 14px;
+  font-size: 0.98rem;
+  font-family: inherit;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+.admin-form-section input:focus,
+.admin-form-section textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(0, 94, 184, 0.12);
+}
+
+.admin-form-section textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.admin-form-section small {
+  color: var(--muted);
+}
+
+.content-textarea {
+  min-height: 420px !important;
+  line-height: 1.7;
+}
+
+.image-upload-box {
+  height: 220px;
+  border: 1px dashed var(--blue-light);
+  background: var(--soft-blue);
+  border-radius: 8px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+  text-align: center;
+  color: var(--blue-dark);
+}
+
+.image-upload-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-upload-box div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.image-upload-box span {
+  color: var(--muted);
+}
+
+.success-message {
+  color: #146c43 !important;
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.category-check-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.category-check-list label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.category-check-list input {
+  width: auto;
+  margin: 0;
+}
+
+.publish-box {
+  gap: 10px;
+}
+
+.publish-box strong {
+  color: var(--blue-dark);
+  font-family: Georgia, serif;
+  font-size: 1.2rem;
+}
+
+.publish-box p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0 0 8px;
+}
+
+.publish-box button {
+  border: 0;
+  background: var(--blue-dark);
+  color: white;
+  padding: 13px 16px;
+  border-radius: 4px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.publish-box button:disabled,
+.secondary-admin-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1050px) {
+  .post-editor-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rich-editor {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  background: #f7f9fc;
+  padding: 12px;
+}
+
+.editor-toolbar button {
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--blue-dark);
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.editor-toolbar button:hover {
+  background: var(--soft-blue);
+}
+
+.editor-content {
+  padding: 22px;
+  min-height: 420px;
+}
+
+.editor-content .ProseMirror {
+  min-height: 420px;
+  outline: none;
+  line-height: 1.8;
+  color: #30394f;
+}
+
+.editor-content .ProseMirror h2,
+.editor-content .ProseMirror h3 {
+  color: var(--blue-dark);
+  font-family: Georgia, serif;
+}
+
+.editor-content .ProseMirror blockquote {
+  border-left: 4px solid var(--blue);
+  padding-left: 16px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.editor-content .ProseMirror img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.article-content h2,
+.article-content h3 {
+  color: var(--blue-dark);
+  font-family: Georgia, serif;
+  margin-top: 34px;
+}
+
+.article-content p {
+  font-size: 1.08rem;
+  line-height: 1.9;
+  color: #30394f;
+  margin-bottom: 22px;
+}
+
+.article-content ul,
+.article-content ol {
+  padding-left: 28px;
+  margin-bottom: 24px;
+}
+
+.article-content li {
+  margin-bottom: 10px;
+  line-height: 1.8;
+}
+
+.article-content blockquote {
+  border-left: 4px solid var(--blue);
+  background: var(--soft-blue);
+  padding: 16px 20px;
+  margin: 28px 0;
+  color: var(--blue-dark);
+  font-style: italic;
+  border-radius: 4px;
+}
+
+.article-content pre {
+  background: #111827;
+  color: white;
+  padding: 18px;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.article-content code {
+  background: #eef2f7;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.article-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.article-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.article-content a {
+  color: var(--blue);
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.article-content mark {
+  background: #fff3cd;
+  padding: 2px 4px;
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { adminRequest } from "../../api/adminApi";
+import { Link } from "react-router-dom";
 import "./adminCss.css";
 
 interface Post {
@@ -58,7 +59,9 @@ export default function AdminPosts() {
                     <p>Gerencie os artigos do blog.</p>
                 </div>
 
-                <button>Novo post</button>
+                <Link to="/painel-secreto/posts/new">
+                  <button>Novo post</button>
+                </Link>
             </div>
 
             {loading && <p>Carregando posts...</p>}

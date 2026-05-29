@@ -1,0 +1,318 @@
+import { useEffect, useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { adminRequest } from "../../api/adminApi";
+import { uploadImageToCloudinary } from "../../api/cloudinaryApi";
+import "./adminCss.css";
+import { RichTextEditor } from "../../components/RichTextEditor";
+
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+interface PagedResponse<T> {
+  content: T[];
+}
+
+interface CreatePostPayload {
+  title: string;
+  summary: string;
+  content: string;
+  coverImageUrl: string;
+  metaTitle: string;
+  metaDescription: string;
+  categoryIds: number[];
+}
+
+export default function AdminNewPost() {
+  const navigate = useNavigate();
+
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [categoryIds, setCategoryIds] = useState<number[]>([]);
+
+  const [title, setTitle] = useState("");
+  const [summary, setSummary] = useState("");
+  const [content, setContent] = useState("");
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
+
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [coverImageUrl, setCoverImageUrl] = useState("");
+  const [previewUrl, setPreviewUrl] = useState("");
+
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [savingPost, setSavingPost] = useState(false);
+  const [error, setError] = useState("");
+
+  const canSubmit = useMemo(() => {
+    return (
+      title.trim().length > 0 &&
+      summary.trim().length > 0 &&
+      content.trim().length > 0 &&
+      categoryIds.length > 0 &&
+      !uploadingImage &&
+      !savingPost
+    );
+  }, [title, summary, content, categoryIds, uploadingImage, savingPost]);
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        setLoadingCategories(true);
+
+        const data = await adminRequest<PagedResponse<Category> | Category[]>(
+          "/admin/categories"
+        );
+
+        if (Array.isArray(data)) {
+          setCategories(data);
+        } else {
+          setCategories(data.content ?? []);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar categorias:", error);
+        setCategories([]);
+      } finally {
+        setLoadingCategories(false);
+      }
+    }
+
+    loadCategories();
+  }, []);
+
+  function toggleCategory(id: number) {
+    setCategoryIds((previous) => {
+      if (previous.includes(id)) {
+        return previous.filter((categoryId) => categoryId !== id);
+      }
+
+      return [...previous, id];
+    });
+  }
+
+  function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError("Selecione apenas arquivos de imagem.");
+      return;
+    }
+
+    const maxSizeInMb = 3;
+    const maxSizeInBytes = maxSizeInMb * 1024 * 1024;
+
+    if (file.size > maxSizeInBytes) {
+      setError(`A imagem deve ter no máximo ${maxSizeInMb}MB.`);
+      return;
+    }
+
+    setError("");
+    setImageFile(file);
+    setCoverImageUrl("");
+    setPreviewUrl(URL.createObjectURL(file));
+  }
+
+  async function handleUploadImage() {
+    if (!imageFile) {
+      setError("Selecione uma imagem antes de enviar.");
+      return;
+    }
+
+    try {
+      setUploadingImage(true);
+      setError("");
+
+      const uploadedUrl = await uploadImageToCloudinary(imageFile);
+
+      setCoverImageUrl(uploadedUrl);
+    } catch (error) {
+      console.error("Erro no upload da imagem:", error);
+      setError("Não foi possível enviar a imagem para o Cloudinary.");
+    } finally {
+      setUploadingImage(false);
+    }
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!canSubmit) {
+      setError("Preencha título, resumo, conteúdo e selecione pelo menos uma categoria.");
+      return;
+    }
+
+    try {
+      setSavingPost(true);
+      setError("");
+
+      let finalCoverImageUrl = coverImageUrl;
+
+      if (imageFile && !coverImageUrl) {
+        finalCoverImageUrl = await uploadImageToCloudinary(imageFile);
+        setCoverImageUrl(finalCoverImageUrl);
+      }
+
+      const payload: CreatePostPayload = {
+        title: title.trim(),
+        summary: summary.trim(),
+        content: content.trim(),
+        coverImageUrl: finalCoverImageUrl,
+        metaTitle: metaTitle.trim() || title.trim(),
+        metaDescription: metaDescription.trim() || summary.trim(),
+        categoryIds,
+      };
+
+      await adminRequest("/admin/posts", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+
+      navigate("/painel-secreto/posts");
+    } catch (error) {
+      console.error("Erro ao criar post:", error);
+      setError("Não foi possível criar o post. Verifique os campos e tente novamente.");
+    } finally {
+      setSavingPost(false);
+    }
+  }
+
+  return (
+    <div>
+      <div className="admin-header">
+        <div>
+          <h1>Novo post</h1>
+          <p>Crie um artigo com imagem de capa, SEO básico e categorias.</p>
+        </div>
+
+        <Link to="/painel-secreto/posts">
+          <button className="secondary-admin-button">Voltar</button>
+        </Link>
+      </div>
+
+      {error && <div className="admin-error">{error}</div>}
+
+      <form className="post-editor-layout" onSubmit={handleSubmit}>
+        <section className="post-editor-main">
+          <div className="admin-form-section">
+            <label>Título do post</label>
+            <input
+              placeholder="Ex: Como melhorar a eficiência operacional da empresa"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              maxLength={180}
+            />
+            <small>{title.length}/180 caracteres</small>
+          </div>
+
+          <div className="admin-form-section">
+            <label>Resumo</label>
+            <textarea
+              placeholder="Escreva um resumo curto para aparecer nos cards e no topo do artigo."
+              value={summary}
+              onChange={(event) => setSummary(event.target.value)}
+              maxLength={300}
+            />
+            <small>{summary.length}/300 caracteres</small>
+          </div>
+
+          <div className="admin-form-section">
+            <label>Conteúdo</label>
+            <RichTextEditor value={content} onChange={setContent} />
+          </div>
+
+          <div className="admin-form-section">
+            <label>SEO</label>
+
+            <input
+              placeholder="Meta title"
+              value={metaTitle}
+              onChange={(event) => setMetaTitle(event.target.value)}
+              maxLength={255}
+            />
+
+            <textarea
+              placeholder="Meta description"
+              value={metaDescription}
+              onChange={(event) => setMetaDescription(event.target.value)}
+              maxLength={300}
+            />
+
+            <small>
+              Se vazio, o sistema usará o título e o resumo como base.
+            </small>
+          </div>
+        </section>
+
+        <aside className="post-editor-sidebar">
+          <div className="admin-form-section">
+            <label>Imagem de capa</label>
+
+            <div className="image-upload-box">
+              {previewUrl || coverImageUrl ? (
+                <img src={coverImageUrl || previewUrl} alt="Prévia da capa" />
+              ) : (
+                <div>
+                  <strong>Prévia da imagem</strong>
+                  <span>JPG, PNG ou WebP até 3MB</span>
+                </div>
+              )}
+            </div>
+
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+
+            <button
+              type="button"
+              className="secondary-admin-button full"
+              onClick={handleUploadImage}
+              disabled={!imageFile || uploadingImage}
+            >
+              {uploadingImage ? "Enviando..." : "Enviar para Cloudinary"}
+            </button>
+
+            {coverImageUrl && (
+              <small className="success-message">
+                Imagem enviada com sucesso.
+              </small>
+            )}
+          </div>
+
+          <div className="admin-form-section">
+            <label>Categorias</label>
+
+            {loadingCategories && <p>Carregando categorias...</p>}
+
+            {!loadingCategories && categories.length === 0 && (
+              <p>Nenhuma categoria encontrada.</p>
+            )}
+
+            <div className="category-check-list">
+              {categories.map((category) => (
+                <label key={category.id}>
+                  <input
+                    type="checkbox"
+                    checked={categoryIds.includes(category.id)}
+                    onChange={() => toggleCategory(category.id)}
+                  />
+                  <span>{category.name}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="publish-box">
+            <strong>Status inicial</strong>
+            <p>O post será salvo como rascunho. Depois você poderá publicar na lista de posts.</p>
+
+            <button disabled={!canSubmit}>
+              {savingPost ? "Salvando..." : "Salvar rascunho"}
+            </button>
+          </div>
+        </aside>
+      </form>
+    </div>
+  );
+}

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { api } from "../api/api";
+import { api } from "../api/adminApi";
 
 export default function AdminCategories() {
   const [categories, setCategories] = useState([]);
@@ -7,7 +7,7 @@ export default function AdminCategories() {
 
   const loadCategories = useCallback(async () => {
     try {
-      const res = await api.get("/api/admin/categories");
+      const res = await api.get("/categories");
 
       const data = res.data;
 
@@ -42,7 +42,7 @@ export default function AdminCategories() {
     }
 
     try {
-      const res = await api.post("/api/admin/categories", {
+      const res = await api.post("/categories", {
         name: trimmedName,
       });
 

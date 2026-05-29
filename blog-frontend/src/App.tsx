@@ -8,6 +8,7 @@ const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminPosts = lazy(() => import("./pages/admin/AdminPost"));
 const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
 const AdminComments = lazy(() => import("./pages/admin/AdminComments"));
+const AdminNewPost = lazy(() => import("./pages/admin/AdminNewPost"));
 
 export default function App() {
     return (
@@ -46,6 +47,7 @@ export default function App() {
                 <Route path="categories" element={<AdminCategories />} />
                 <Route path="comments" element={<AdminComments />} />
             </Route>
+            <Route path="/painel-secreto/posts/new" element={<AdminNewPost />} />
         </Routes>
     );
 }

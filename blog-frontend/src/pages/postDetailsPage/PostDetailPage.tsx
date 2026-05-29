@@ -106,7 +106,7 @@ export default function PostDetailPage() {
               <div className="article-body">
                 <div className="article-categories">
                   {post.categories?.map((category) => (
-                    <span key={category.id}>{category.name}</span>
+                    <span key={category.id}>{category.name} |  run dev</span>
                   ))}
                 </div>
 
@@ -129,11 +129,10 @@ export default function PostDetailPage() {
                   </span>
                 </div>
 
-                <div className="article-content">
-                  {post.content.split("\n").map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
-                  ))}
-                </div>
+                <div
+                  className="article-content"
+                  dangerouslySetInnerHTML={{ __html: post.content }}
+                />
               </div>
             </article>
 

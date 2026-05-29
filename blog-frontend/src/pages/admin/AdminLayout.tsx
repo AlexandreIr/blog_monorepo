@@ -19,10 +19,9 @@ export default function AdminLayout() {
         <div className="admin-shell">
             <aside className="admin-sidebar">
                 <Link to="/painel-secreto" className="admin-logo">
-                    <div className="logo-icon">LCS</div>
                     <div>
-                        <strong>Admin</strong>
-                        <small>Blog corporativo</small>
+                        <strong>Painel Administrativo</strong>
+                        <small>Libertad</small>
                     </div>
                 </Link>
 

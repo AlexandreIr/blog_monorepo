@@ -22,7 +22,7 @@ export async function adminRequest<T>(
 ): Promise<T> {
     const token = getToken();
 
-    const response = await fetch(`${API_URL}${endpoint}`, {
+    const response = await fetch(`http://localhost:8081/api${endpoint}`, {
         ...options,
         headers: {
             "Content-Type": "application/json",

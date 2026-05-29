@@ -241,3 +241,138 @@
 .comment-form button:hover {
   background: var(--blue);
 }
+
+.rich-editor {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  background: #f7f9fc;
+  padding: 12px;
+}
+
+.editor-toolbar button {
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--blue-dark);
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.editor-toolbar button:hover {
+  background: var(--soft-blue);
+}
+
+.editor-content {
+  padding: 22px;
+  min-height: 420px;
+}
+
+.editor-content .ProseMirror {
+  min-height: 420px;
+  outline: none;
+  line-height: 1.8;
+  color: #30394f;
+}
+
+.editor-content .ProseMirror h2,
+.editor-content .ProseMirror h3 {
+  color: var(--blue-dark);
+  font-family: Georgia, serif;
+}
+
+.editor-content .ProseMirror blockquote {
+  border-left: 4px solid var(--blue);
+  padding-left: 16px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.editor-content .ProseMirror img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.article-content h2,
+.article-content h3 {
+  color: var(--blue-dark);
+  font-family: Georgia, serif;
+  margin-top: 34px;
+}
+
+.article-content p {
+  font-size: 1.08rem;
+  line-height: 1.9;
+  color: #30394f;
+  margin-bottom: 22px;
+}
+
+.article-content ul,
+.article-content ol {
+  padding-left: 28px;
+  margin-bottom: 24px;
+}
+
+.article-content li {
+  margin-bottom: 10px;
+  line-height: 1.8;
+}
+
+.article-content blockquote {
+  border-left: 4px solid var(--blue);
+  background: var(--soft-blue);
+  padding: 16px 20px;
+  margin: 28px 0;
+  color: var(--blue-dark);
+  font-style: italic;
+  border-radius: 4px;
+}
+
+.article-content pre {
+  background: #111827;
+  color: white;
+  padding: 18px;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.article-content code {
+  background: #eef2f7;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.article-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.article-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.article-content a {
+  color: var(--blue);
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.article-content mark {
+  background: #fff3cd;
+  padding: 2px 4px;
+}
+
+.transparent{
+    background-color: transparent;
+}
