@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { adminRequest } from "../../api/adminApi";
+// @ts-ignore
 import "./adminCss.css";
 
 interface Category {

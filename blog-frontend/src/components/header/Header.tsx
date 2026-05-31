@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
+// @ts-ignore
 import "./header.css";
+import React from "react";
+import {isAuthenticated} from "../../api/adminApi";
+import {ArrowLeftIcon} from "lucide-react";
 
 interface HeaderProps {
   search: string;
@@ -10,6 +14,13 @@ interface HeaderProps {
 export function Header({ search, onSearchChange, onSearchSubmit }: HeaderProps) {
   return (
     <header>
+
+      {isAuthenticated() && (
+          <div className="admin-area">
+            <ArrowLeftIcon />
+            <Link to="/painel-secreto">Voltar para o painel administrativo</Link>
+          </div>
+      )}
 
       <div className="navbar">
         <Link to="/" className="logo-area">

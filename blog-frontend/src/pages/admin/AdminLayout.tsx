@@ -1,5 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { isAuthenticated, removeToken } from "../../api/adminApi";
+// @ts-ignore
 import "./adminCss.css";
 
 export default function AdminLayout() {
@@ -12,7 +13,7 @@ export default function AdminLayout() {
 
     function logout() {
         removeToken();
-        navigate("/painel-secreto/login");
+        navigate("/");
     }
 
     return (

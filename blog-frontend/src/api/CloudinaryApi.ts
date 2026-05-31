@@ -6,8 +6,9 @@ interface CloudinaryUploadResponse {
     height: number;
     bytes: number;
 }
-
+// @ts-ignore
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+// @ts-ignore
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
 export async function uploadImageToCloudinary(file: File): Promise<string> {

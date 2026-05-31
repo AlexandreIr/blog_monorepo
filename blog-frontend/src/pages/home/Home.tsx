@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { api } from "../../api/api";
 import { Category, PagedResponse, PostSummary } from "../../types/blog";
@@ -6,10 +6,9 @@ import { Header } from "../../components/header/Header";
 import { Hero } from "../../components/hero/Hero";
 import { PostCard } from "../../components/PostCard";
 import { CategoriesBox } from "../../components/CategoriesBox";
-import { NewsletterBox } from "../../components/NewsletterBox";
-import { BenefitsBar } from "../../components/BenefitsBar";
 import { Footer } from "../../components/Footer";
 import { PostCardSkeleton } from "../../components/postCardSkeleton/PostCardSkeleton";
+// @ts-ignore
 import "./home.css";
 
 export default function Home() {

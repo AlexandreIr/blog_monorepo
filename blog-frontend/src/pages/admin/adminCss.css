@@ -493,6 +493,17 @@
   background: var(--soft-blue);
 }
 
+.editor-toolbar button.active {
+    background: var(--blue-dark);
+    color: white;
+    border-color: var(--blue-dark);
+}
+
+.editor-toolbar button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
 .editor-content {
   padding: 22px;
   min-height: 420px;

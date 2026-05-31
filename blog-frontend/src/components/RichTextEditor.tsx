@@ -1,10 +1,11 @@
+import React, { useRef, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
-import "../pages/postDetailsPage/postDetailsPage.css";
+import { uploadImageToCloudinary } from "../api/cloudinaryApi";
 
 interface RichTextEditorProps {
   value: string;
@@ -12,13 +13,19 @@ interface RichTextEditorProps {
 }
 
 export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
       Link.configure({
         openOnClick: false,
       }),
-      Image,
+      Image.configure({
+        inline: false,
+        allowBase64: false,
+      }),
       Highlight,
       TextAlign.configure({
         types: ["heading", "paragraph"],
@@ -33,94 +40,218 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
   if (!editor) return null;
 
   function setLink() {
-    const url = window.prompt("Digite a URL do link:");
+    const previousUrl = editor.getAttributes("link").href;
+    const url = window.prompt("Digite a URL do link:", previousUrl || "");
 
-    if (!url) return;
+    if (url === null) return;
 
-    editor.chain().focus().setLink({ href: url }).run();
+    if (url.trim() === "") {
+      editor.chain().focus().unsetLink().run();
+      return;
+    }
+
+    const normalizedUrl = url.trim();
+
+    if (
+        !normalizedUrl.startsWith("https://") &&
+        !normalizedUrl.startsWith("http://") &&
+        !normalizedUrl.startsWith("mailto:")
+    ) {
+      alert("Use uma URL começando com http://, https:// ou mailto:");
+      return;
+    }
+
+    editor
+        .chain()
+        .focus()
+        .setLink({
+          href: normalizedUrl,
+          target: "_blank",
+          rel: "noopener noreferrer",
+        })
+        .run();
   }
-
-  function addImage() {
+  function addImageByUrl() {
     const url = window.prompt("Digite a URL da imagem:");
 
     if (!url) return;
 
-    editor.chain().focus().setImage({ src: url }).run();
+    editor.chain().focus().setImage({ src: url.trim() }).run();
+  }
+
+  async function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Selecione apenas arquivos de imagem.");
+      return;
+    }
+
+    const maxSizeInMb = 3;
+    const maxSizeInBytes = maxSizeInMb * 1024 * 1024;
+
+    if (file.size > maxSizeInBytes) {
+      alert(`A imagem deve ter no máximo ${maxSizeInMb}MB.`);
+      return;
+    }
+
+    try {
+      setUploadingImage(true);
+
+      const imageUrl = await uploadImageToCloudinary(file);
+
+      editor.chain().focus().setImage({ src: imageUrl }).run();
+    } catch (error) {
+      console.error("Erro ao enviar imagem:", error);
+      alert("Não foi possível enviar a imagem.");
+    } finally {
+      setUploadingImage(false);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
   }
 
   return (
-    <div className="rich-editor">
-      <div className="editor-toolbar">
-        <button type="button" onClick={() => editor.chain().focus().toggleBold().run()}>
-          <b>N</b>
-        </button>
+      <div className="rich-editor">
+        <div className="editor-toolbar">
+          <button
+              type="button"
+              className={editor.isActive("bold") ? "active" : ""}
+              onClick={() => editor.chain().focus().toggleBold().run()}
+          >
+            Negrito
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().toggleItalic().run()}>
-          <i>I</i>
-        </button>
+          <button
+              type="button"
+              className={editor.isActive("italic") ? "active" : ""}
+              onClick={() => editor.chain().focus().toggleItalic().run()}
+          >
+            Itálico
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().toggleStrike().run()}>
-          <s>S</s>
-        </button>
+          <button
+              type="button"
+              className={editor.isActive("strike") ? "active" : ""}
+              onClick={() => editor.chain().focus().toggleStrike().run()}
+          >
+            Riscado
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().toggleHighlight().run()}>
-          <mark> Marcar </mark>
-        </button>
+          <button
+              type="button"
+              className={editor.isActive("highlight") ? "active" : ""}
+              onClick={() => editor.chain().focus().toggleHighlight().run()}
+          >
+            Destaque
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
-          <b>T</b>
-        </button>
+          <button
+              type="button"
+              className={editor.isActive("heading", { level: 2 }) ? "active" : ""}
+              onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          >
+            Título
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
-          Subtítulo
-        </button>
+          <button
+              type="button"
+              className={editor.isActive("heading", { level: 3 }) ? "active" : ""}
+              onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          >
+            Subtítulo
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().toggleBulletList().run()}>
-          Lista
-        </button>
+          <button
+              type="button"
+              className={editor.isActive("bulletList") ? "active" : ""}
+              onClick={() => editor.chain().focus().toggleBulletList().run()}
+          >
+            Lista
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().toggleOrderedList().run()}>
-          Numerada
-        </button>
+          <button
+              type="button"
+              className={editor.isActive("orderedList") ? "active" : ""}
+              onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          >
+            Numerada
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().toggleBlockquote().run()}>
-          Citação
-        </button>
+          <button
+              type="button"
+              className={editor.isActive("blockquote") ? "active" : ""}
+              onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          >
+            Citação
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().setHorizontalRule().run()}>
-          Linha
-        </button>
+          <button
+              type="button"
+              onClick={() => editor.chain().focus().setHorizontalRule().run()}
+          >
+            Linha
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().setTextAlign("left").run()}>
-          Esquerda
-        </button>
+          <button
+              type="button"
+              onClick={() => editor.chain().focus().setTextAlign("left").run()}
+          >
+            Esquerda
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().setTextAlign("center").run()}>
-          Centro
-        </button>
+          <button
+              type="button"
+              onClick={() => editor.chain().focus().setTextAlign("center").run()}
+          >
+            Centro
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().setTextAlign("right").run()}>
-          Direita
-        </button>
+          <button
+              type="button"
+              onClick={() => editor.chain().focus().setTextAlign("right").run()}
+          >
+            Direita
+          </button>
 
-        <button type="button" onClick={setLink} className="transparent">
-          <img src="../../link-icon.png" alt="link-icon" width = "20px"/>
-        </button>
+          <button type="button" onClick={setLink}>
+            Link
+          </button>
 
-        <button type="button" onClick={addImage}>
-          Imagem por URL
-        </button>
+          <button type="button" onClick={addImageByUrl}>
+            Imagem URL
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().undo().run()}>
-          Desfazer
-        </button>
+          <button
+              type="button"
+              disabled={uploadingImage}
+              onClick={() => fileInputRef.current?.click()}
+          >
+            {uploadingImage ? "Enviando..." : "Upload imagem"}
+          </button>
 
-        <button type="button" onClick={() => editor.chain().focus().redo().run()}>
-          Refazer
-        </button>
+          <button type="button" onClick={() => editor.chain().focus().undo().run()}>
+            Desfazer
+          </button>
+
+          <button type="button" onClick={() => editor.chain().focus().redo().run()}>
+            Refazer
+          </button>
+
+          <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={handleImageUpload}
+          />
+        </div>
+
+        <EditorContent editor={editor} className="editor-content" />
       </div>
-
-      <EditorContent editor={editor} className="editor-content" />
-    </div>
   );
 }

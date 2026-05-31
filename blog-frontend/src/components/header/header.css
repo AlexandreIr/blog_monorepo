@@ -76,3 +76,14 @@
   width: 100%;
   font-size: 0.95rem;
 }
+
+.admin-area{
+  background: var(--blue-dark);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  font-weight: 800;
+  cursor: pointer;
+}

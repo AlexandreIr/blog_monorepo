@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft, Calendar, Clock, Send } from "lucide-react";
 import { api } from "../../api/api";
+// @ts-ignore
 import { Comment, PostDetail } from "../types/blog";
 import { Header } from "../../components/header/Header";
 import { Footer } from "../../components/Footer";
+// @ts-ignore
 import "./postDetailsPage.css";
+import { sanitizeHtml } from "../../utils/sanitizeHtml";
+import {Category} from "../../types/blog";
 
 export default function PostDetailPage() {
   const slug = window.location.pathname.split("/posts/")[1];
@@ -73,6 +77,8 @@ export default function PostDetailPage() {
     }
   }
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div>
       <Header search={search} onSearchChange={setSearch} />
@@ -105,7 +111,7 @@ export default function PostDetailPage() {
 
               <div className="article-body">
                 <div className="article-categories">
-                  {post.categories?.map((category) => (
+                  {post.categories?.map((category : Category) => (
                     <span key={category.id}>{category.name} |  run dev</span>
                   ))}
                 </div>
@@ -130,8 +136,10 @@ export default function PostDetailPage() {
                 </div>
 
                 <div
-                  className="article-content"
-                  dangerouslySetInnerHTML={{ __html: post.content }}
+                    className="article-content"
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizeHtml(post.content),
+                    }}
                 />
               </div>
             </article>

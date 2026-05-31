@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+// @ts-ignore
 import "./adminCss.css";
 
 export default function AdminDashboard() {
