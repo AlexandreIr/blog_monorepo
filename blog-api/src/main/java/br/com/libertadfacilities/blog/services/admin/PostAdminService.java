@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -121,17 +120,6 @@ public class PostAdminService {
         return mapper.toResponse(updated);
     }
 
-    private String generateUniqueSlug(String title){
-        String baseSlug = SlugUtil.toSlug(title);
-        String slug = baseSlug;
-        int counter = 1;
-
-        while(postRepository.existsBySlug(slug)){
-            slug = baseSlug + "-"+ counter;
-            counter++;
-        }
-        return slug;
-    }
 
     public Set<Category> resolveCategories(Set<Long> categoryIds) {
         Set<Category> categories = categoryIds.stream()
@@ -144,5 +132,24 @@ public class PostAdminService {
         }
 
         return categories;
+    }
+
+    public void delete(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post não encontrado"));
+
+        postRepository.delete(post);
+    }
+
+    private String generateUniqueSlug(String title){
+        String baseSlug = SlugUtil.toSlug(title);
+        String slug = baseSlug;
+        int counter = 1;
+
+        while(postRepository.existsBySlug(slug)){
+            slug = baseSlug + "-"+ counter;
+            counter++;
+        }
+        return slug;
     }
 }

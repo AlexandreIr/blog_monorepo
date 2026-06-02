@@ -14,6 +14,7 @@ public record PublicPostDetailResponse(
         String metaDescription,
         LocalDateTime publishedAt,
         String authorName,
-        Set<CategoryResponse> categories
+        Set<CategoryResponse> categories,
+        Long viewCount
 ) {
 }

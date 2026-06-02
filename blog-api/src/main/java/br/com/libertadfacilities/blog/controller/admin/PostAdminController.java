@@ -74,4 +74,10 @@ public class PostAdminController {
         return ResponseEntity.ok(postAdminService.unpublish(id));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        postAdminService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

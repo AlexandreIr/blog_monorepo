@@ -11,6 +11,7 @@ public record PublicPostSummaryResponse(
         String coverImageUrl,
         LocalDateTime publishedAt,
         String authorName,
-        Set<CategoryResponse> categories
+        Set<CategoryResponse> categories,
+        Long viewCount
 ) {
 }

@@ -360,4 +360,12 @@ a {
   height: 100%;
 }
 
+.admin-card-actions button.danger {
+  background: #842029;
+}
+
+.admin-card-actions button.danger:hover {
+  background: #6b1821;
+}
+
 

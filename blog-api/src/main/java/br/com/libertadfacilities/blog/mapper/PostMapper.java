@@ -9,20 +9,24 @@ import br.com.libertadfacilities.blog.entity.Category;
 import br.com.libertadfacilities.blog.entity.Post;
 import br.com.libertadfacilities.blog.entity.User;
 import br.com.libertadfacilities.blog.enums.PostStatus;
+import br.com.libertadfacilities.blog.services.HtmlSanitizerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class PostMapper {
+    private final HtmlSanitizerService htmlSanitizerService;
 
     public Post toPost(CreatePostRequest request, User user){
         Post post = new Post();
 
         post.setTitle(request.title());
         post.setSummary(request.summary().trim());
-        post.setContent(request.content().trim());
+        post.setContent(htmlSanitizerService.sanitize(request.content()));
         post.setCoverImageUrl(request.coverImageUrl());
         post.setMetaTitle(request.metaTitle());
         post.setMetaDescription(request.metaDescription());
@@ -75,7 +79,8 @@ public class PostMapper {
                 post.getCoverImageUrl(),
                 post.getPublishedAt(),
                 post.getAuthor().getName(),
-                categories
+                categories,
+                post.getViewCount()
         );
     }
 
@@ -100,7 +105,8 @@ public class PostMapper {
                 post.getMetaDescription(),
                 post.getPublishedAt(),
                 post.getAuthor().getName(),
-                categories
+                categories,
+                post.getViewCount()
         );
     }
 }

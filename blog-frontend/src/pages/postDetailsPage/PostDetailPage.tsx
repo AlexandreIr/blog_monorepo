@@ -32,6 +32,8 @@ export default function PostDetailPage() {
 
         setPost(postResponse.data);
         setComments(Array.isArray(commentsResponse.data) ? commentsResponse.data : []);
+
+        await api.post(`/api/posts/${slug}/views`);
       } catch (error) {
         console.error("Erro ao carregar post:", error);
         setPost(null);
@@ -98,6 +100,7 @@ export default function PostDetailPage() {
           </section>
         )}
 
+
         {post && (
           <>
             <article className="article-shell">
@@ -108,6 +111,9 @@ export default function PostDetailPage() {
                   <div className="article-cover-placeholder">LCS</div>
                 )}
               </div>
+              <p>
+                Visualizações únicas: <strong>{post.viewCount ?? 0}</strong>
+              </p>
 
               <div className="article-body">
                 <div className="article-categories">

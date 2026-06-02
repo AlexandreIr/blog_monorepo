@@ -56,4 +56,7 @@ public class Post extends  BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<Category> categories = new HashSet<>();
+
+    @Column(nullable = false)
+    private Long viewCount = 0L;
 }

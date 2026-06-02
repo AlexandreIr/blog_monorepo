@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { adminRequest } from "../../api/adminApi";
 import { uploadImageToCloudinary } from "../../api/cloudinaryApi";
+// @ts-ignore
 import "./adminCss.css";
 import { RichTextEditor } from "../../components/RichTextEditor";
 
