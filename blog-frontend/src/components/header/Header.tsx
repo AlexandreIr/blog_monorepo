@@ -18,7 +18,7 @@ export function Header({ search, onSearchChange, onSearchSubmit }: HeaderProps) 
       {isAuthenticated() && (
           <div className="admin-area">
             <ArrowLeftIcon />
-            <Link to="/painel-secreto">Voltar para o painel administrativo</Link>
+            <Link to="/painel-secreto">Voltar ao painel administrativo</Link>
           </div>
       )}
 

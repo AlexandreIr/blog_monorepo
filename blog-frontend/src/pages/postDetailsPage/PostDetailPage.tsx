@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, Calendar, Clock, Send } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Send, Eye } from "lucide-react";
 import { api } from "../../api/api";
 // @ts-ignore
 import { Comment, PostDetail } from "../types/blog";
@@ -111,9 +111,7 @@ export default function PostDetailPage() {
                   <div className="article-cover-placeholder">LCS</div>
                 )}
               </div>
-              <p>
-                Visualizações: <strong>{post.viewCount ?? 0}</strong>
-              </p>
+
 
               <div className="article-body">
                 <div className="article-categories">
@@ -121,6 +119,10 @@ export default function PostDetailPage() {
                     <span key={category.id}>{category.name} | </span>
                   ))}
                 </div>
+
+                <p>
+                  Visualizações: <strong>{post.viewCount ?? 0}</strong>
+                </p>
 
                 <h1>{post.title}</h1>
 
@@ -157,12 +159,12 @@ export default function PostDetailPage() {
                   <div className="underline" />
                 </div>
 
-                <span>{comments.length} comentário{comments.length>1?'s':''}</span>
+                <span>{comments.length} aprovado(s)</span>
               </div>
 
               {comments.length === 0 && (
                 <p className="empty-message">
-                  Nenhum comentário ainda. Seja o primeiro a participar.
+                  Nenhum comentário aprovado ainda. Seja o primeiro a participar.
                 </p>
               )}
 

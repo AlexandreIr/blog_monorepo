@@ -11,15 +11,15 @@ export function Hero({ post }: HeroProps) {
       <div className="hero-overlay">
         <span className="badge">Destaque</span>
 
-        <h1>{post?.title ?? "Conteúdo estratégico para empresas que querem crescer"}</h1>
+        <h1>{post?.title ?? "Blog Libertad"}</h1>
 
         <p>
           {post?.summary ??
-            "Insights, análises e soluções práticas sobre negócios, gestão, legislação e serviços corporativos."}
+            "Fique por dentro de todas as novidades aqui da libertad. "}
         </p>
 
         <div className="hero-meta">
-          <span>{post?.publishedAt ? new Date(post.publishedAt).toLocaleDateString("pt-BR") : "Conteúdo atualizado"}</span>
+          <span>{post?.publishedAt ? new Date(post.publishedAt).toLocaleDateString("pt-BR") : ""}</span>
 
         </div>
 

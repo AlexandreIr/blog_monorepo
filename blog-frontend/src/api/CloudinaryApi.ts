@@ -9,11 +9,17 @@ interface CloudinaryUploadResponse {
 // @ts-ignore
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 // @ts-ignore
-const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+const UPLOAD_PRESET: string = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
 export async function uploadImageToCloudinary(file: File): Promise<string> {
-    if (!CLOUD_NAME || !UPLOAD_PRESET) {
-        throw new Error("Cloudinary não configurado. Verifique o arquivo .env.");
+    if (!CLOUD_NAME && !UPLOAD_PRESET) {
+        throw new Error("CLOUD_NAME e UPLOAD_PRESET variables not present");
+    }
+    if(!CLOUD_NAME){
+        throw new Error("CLOUD_NAME variable not present");
+    }
+    if(!UPLOAD_PRESET){
+        throw new Error("UPLOAD_PRESET variable not present");
     }
 
     const formData = new FormData();
