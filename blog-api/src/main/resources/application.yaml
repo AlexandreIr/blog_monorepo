@@ -27,10 +27,6 @@ spring:
           auth: true
           starttls:
             enable: true
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
 
 Cloudinary:
   cloud_name: ${CLOUDINARY_CLOUD_NAME}
@@ -47,6 +43,9 @@ server:
     mime-types: application/json,text/html,text/plain,text/css,application/javascript
     min-response-size: 1024
   port: 8081
+
+app:
+  frontend-url: ${FRONTEND_URL}
 
 management:
   endpoints:

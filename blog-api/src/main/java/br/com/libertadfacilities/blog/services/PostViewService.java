@@ -1,5 +1,6 @@
 package br.com.libertadfacilities.blog.services;
 
+
 import br.com.libertadfacilities.blog.entity.Post;
 import br.com.libertadfacilities.blog.entity.PostView;
 import br.com.libertadfacilities.blog.enums.PostStatus;
