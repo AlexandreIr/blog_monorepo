@@ -6,6 +6,7 @@ import br.com.libertadfacilities.blog.enums.PostStatus;
 import br.com.libertadfacilities.blog.exception.ResourceNotFoundException;
 import br.com.libertadfacilities.blog.repositories.PostRepository;
 import br.com.libertadfacilities.blog.repositories.PostViewRepository;
+import br.com.libertadfacilities.blog.services.observability.BlogMetricsService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class PostViewService {
 
     private final PostRepository postRepository;
     private final PostViewRepository postViewRepository;
+    private final BlogMetricsService blogMetricsService;
 
     private static final String IP_HASH_SALT = "troque-essa-chave-em-producao";
 
@@ -46,6 +48,7 @@ public class PostViewService {
 
         post.setViewCount(post.getViewCount() + 1);
         postRepository.save(post);
+        blogMetricsService.incrementPostView(slug);
     }
 
     private String extractClientIp(HttpServletRequest request) {

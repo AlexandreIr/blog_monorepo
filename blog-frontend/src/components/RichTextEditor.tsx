@@ -7,6 +7,9 @@ import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
 import { uploadImageToCloudinary } from "../api/cloudinaryApi";
 
+// @ts-ignore
+import "./richTextEditor.css";
+
 interface RichTextEditorProps {
   value: string;
   onChange: (html: string) => void;
@@ -117,130 +120,80 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
 
   return (
       <div className="rich-editor">
-        <div className="editor-toolbar">
-          <button
-              type="button"
-              className={editor.isActive("bold") ? "active" : ""}
-              onClick={() => editor.chain().focus().toggleBold().run()}
-          >
-            Negrito
-          </button>
+        <div className="editor-toolbar editor-toolbar-sticky">
+          <div className="toolbar-group">
+            <button type="button" className={editor.isActive("bold") ? "active" : ""} onClick={() => editor.chain().focus().toggleBold().run()}>
+              B
+            </button>
 
-          <button
-              type="button"
-              className={editor.isActive("italic") ? "active" : ""}
-              onClick={() => editor.chain().focus().toggleItalic().run()}
-          >
-            Itálico
-          </button>
+            <button type="button" className={editor.isActive("italic") ? "active" : ""} onClick={() => editor.chain().focus().toggleItalic().run()}>
+              I
+            </button>
 
-          <button
-              type="button"
-              className={editor.isActive("strike") ? "active" : ""}
-              onClick={() => editor.chain().focus().toggleStrike().run()}
-          >
-            Riscado
-          </button>
+            <button type="button" className={editor.isActive("strike") ? "active" : ""} onClick={() => editor.chain().focus().toggleStrike().run()}>
+              S
+            </button>
 
-          <button
-              type="button"
-              className={editor.isActive("highlight") ? "active" : ""}
-              onClick={() => editor.chain().focus().toggleHighlight().run()}
-          >
-            Destaque
-          </button>
+            <button type="button" className={editor.isActive("highlight") ? "active" : ""} onClick={() => editor.chain().focus().toggleHighlight().run()}>
+              Destaque
+            </button>
+          </div>
 
-          <button
-              type="button"
-              className={editor.isActive("heading", { level: 2 }) ? "active" : ""}
-              onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          >
-            Título
-          </button>
+          <div className="toolbar-group">
+            <button type="button" className={editor.isActive("heading", { level: 2 }) ? "active" : ""} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
+              H2
+            </button>
 
-          <button
-              type="button"
-              className={editor.isActive("heading", { level: 3 }) ? "active" : ""}
-              onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          >
-            Subtítulo
-          </button>
+            <button type="button" className={editor.isActive("heading", { level: 3 }) ? "active" : ""} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
+              H3
+            </button>
 
-          <button
-              type="button"
-              className={editor.isActive("bulletList") ? "active" : ""}
-              onClick={() => editor.chain().focus().toggleBulletList().run()}
-          >
-            Lista
-          </button>
+            <button type="button" className={editor.isActive("bulletList") ? "active" : ""} onClick={() => editor.chain().focus().toggleBulletList().run()}>
+              Lista
+            </button>
 
-          <button
-              type="button"
-              className={editor.isActive("orderedList") ? "active" : ""}
-              onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          >
-            Numerada
-          </button>
+            <button type="button" className={editor.isActive("orderedList") ? "active" : ""} onClick={() => editor.chain().focus().toggleOrderedList().run()}>
+              1. Lista
+            </button>
+          </div>
 
-          <button
-              type="button"
-              className={editor.isActive("blockquote") ? "active" : ""}
-              onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          >
-            Citação
-          </button>
+          <div className="toolbar-group">
+            <button type="button" onClick={() => editor.chain().focus().setTextAlign("left").run()}>
+              Esq.
+            </button>
 
-          <button
-              type="button"
-              onClick={() => editor.chain().focus().setHorizontalRule().run()}
-          >
-            Linha
-          </button>
+            <button type="button" onClick={() => editor.chain().focus().setTextAlign("center").run()}>
+              Centro
+            </button>
 
-          <button
-              type="button"
-              onClick={() => editor.chain().focus().setTextAlign("left").run()}
-          >
-            Esquerda
-          </button>
+            <button type="button" onClick={() => editor.chain().focus().setTextAlign("right").run()}>
+              Dir.
+            </button>
+          </div>
 
-          <button
-              type="button"
-              onClick={() => editor.chain().focus().setTextAlign("center").run()}
-          >
-            Centro
-          </button>
+          <div className="toolbar-group">
+            <button type="button" onClick={setLink}>
+              Link
+            </button>
 
-          <button
-              type="button"
-              onClick={() => editor.chain().focus().setTextAlign("right").run()}
-          >
-            Direita
-          </button>
+            <button type="button" onClick={addImageByUrl}>
+              Imagem URL
+            </button>
 
-          <button type="button" onClick={setLink}>
-            Link
-          </button>
+            <button type="button" disabled={uploadingImage} onClick={() => fileInputRef.current?.click()}>
+              {uploadingImage ? "Enviando..." : "Upload imagem"}
+            </button>
+          </div>
 
-          <button type="button" onClick={addImageByUrl}>
-            Imagem URL
-          </button>
+          <div className="toolbar-group">
+            <button type="button" onClick={() => editor.chain().focus().undo().run()}>
+              ↶
+            </button>
 
-          <button
-              type="button"
-              disabled={uploadingImage}
-              onClick={() => fileInputRef.current?.click()}
-          >
-            {uploadingImage ? "Enviando..." : "Upload imagem"}
-          </button>
-
-          <button type="button" onClick={() => editor.chain().focus().undo().run()}>
-            Desfazer
-          </button>
-
-          <button type="button" onClick={() => editor.chain().focus().redo().run()}>
-            Refazer
-          </button>
+            <button type="button" onClick={() => editor.chain().focus().redo().run()}>
+              ↷
+            </button>
+          </div>
 
           <input
               ref={fileInputRef}

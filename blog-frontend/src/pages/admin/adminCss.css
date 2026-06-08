@@ -604,3 +604,235 @@
   background: #fff3cd;
   padding: 2px 4px;
 }
+
+.dashboard-header {
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.dashboard-header h1 {
+    color: white;
+}
+
+.dashboard-header p {
+    color: #eaf3ff;
+    max-width: 680px;
+}
+
+.admin-eyebrow {
+    display: inline-block;
+    color: white;
+    background: rgba(255, 255, 255, 0.16);
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 900;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-bottom: 26px;
+}
+
+.dashboard-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: 0 8px 28px rgba(16, 24, 40, 0.04);
+}
+
+.dashboard-card.primary {
+    border-top: 5px solid var(--red);
+}
+
+.dashboard-card span {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.dashboard-card strong {
+    display: block;
+    margin-top: 10px;
+    color: var(--blue-dark);
+    font-size: 1.8rem;
+    font-family: Georgia, serif;
+}
+
+.dashboard-card p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.dashboard-card a {
+    color: var(--blue-dark);
+    font-weight: 900;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 22px;
+}
+
+.dashboard-panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 26px;
+    box-shadow: 0 8px 28px rgba(16, 24, 40, 0.04);
+}
+
+.dashboard-panel h2 {
+    margin: 0 0 20px;
+    color: var(--blue-dark);
+    font-family: Georgia, serif;
+}
+
+.dashboard-panel.highlight {
+    background: #f8fbff;
+}
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.timeline div {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.timeline span {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--blue-dark);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    flex-shrink: 0;
+}
+
+.timeline p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.status-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.status-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.status-list strong {
+    color: var(--blue-dark);
+}
+
+.status-list span {
+    background: #e7f8ed;
+    color: #146c43;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-weight: 900;
+    font-size: 0.78rem;
+}
+
+@media (max-width: 1050px) {
+    .dashboard-stats,
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.admin-shell.editor-mode {
+    grid-template-columns: 1fr;
+}
+
+.admin-shell.editor-mode .admin-main {
+    padding: 24px;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.preview-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(16, 24, 40, 0.72);
+    z-index: 999;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.preview-modal {
+    max-width: 1120px;
+    margin: 0 auto;
+    background: #f7f9fc;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+}
+
+.preview-modal-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preview-modal-header strong {
+    display: block;
+    color: var(--blue-dark);
+    font-size: 1.1rem;
+}
+
+.preview-modal-header span {
+    display: block;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+.preview-modal-header button {
+    border: 0;
+    background: var(--blue-dark);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.preview-modal-body {
+    padding: 24px;
+}
+
+.preview-article {
+    box-shadow: none;
+}

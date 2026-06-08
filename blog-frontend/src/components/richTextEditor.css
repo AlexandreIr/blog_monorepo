@@ -1,0 +1,77 @@
+.rich-editor {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: visible;
+    background: white;
+}
+
+.editor-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    border: 1px solid var(--border);
+    border-bottom: 0;
+    background: rgba(247, 249, 252, 0.96);
+    padding: 12px;
+    border-radius: 10px 10px 0 0;
+    backdrop-filter: blur(10px);
+}
+
+.editor-toolbar-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.editor-toolbar button {
+    border: 0;
+    background: transparent;
+    color: var(--blue-dark);
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-weight: 900;
+    cursor: pointer;
+    min-height: 36px;
+}
+
+.editor-toolbar button:hover {
+    background: var(--soft-blue);
+}
+
+.editor-toolbar button.active {
+    background: var(--blue-dark);
+    color: white;
+}
+
+.editor-toolbar button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.editor-content {
+    border: 1px solid var(--border);
+    border-radius: 0 0 10px 10px;
+    padding: 28px;
+    min-height: 520px;
+    background: white;
+}
+
+.editor-content .ProseMirror {
+    min-height: 520px;
+    max-width: 820px;
+    margin: 0 auto;
+    outline: none;
+    line-height: 1.85;
+    color: #30394f;
+    font-size: 1.05rem;
+}

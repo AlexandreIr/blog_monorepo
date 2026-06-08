@@ -112,13 +112,13 @@ export default function PostDetailPage() {
                 )}
               </div>
               <p>
-                Visualizações únicas: <strong>{post.viewCount ?? 0}</strong>
+                Visualizações: <strong>{post.viewCount ?? 0}</strong>
               </p>
 
               <div className="article-body">
                 <div className="article-categories">
                   {post.categories?.map((category : Category) => (
-                    <span key={category.id}>{category.name} |  run dev</span>
+                    <span key={category.id}>{category.name} | </span>
                   ))}
                 </div>
 
@@ -157,12 +157,12 @@ export default function PostDetailPage() {
                   <div className="underline" />
                 </div>
 
-                <span>{comments.length} aprovado(s)</span>
+                <span>{comments.length} comentário{comments.length>1?'s':''}</span>
               </div>
 
               {comments.length === 0 && (
                 <p className="empty-message">
-                  Nenhum comentário aprovado ainda. Seja o primeiro a participar.
+                  Nenhum comentário ainda. Seja o primeiro a participar.
                 </p>
               )}
 

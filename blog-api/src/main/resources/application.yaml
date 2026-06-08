@@ -48,3 +48,20 @@ server:
     min-response-size: 1024
   port: 8081
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,loggers
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: blog-api
+
+logging:
+  level:
+    root: INFO
+    br.com.libertadfacilities.blog: DEBUG
+

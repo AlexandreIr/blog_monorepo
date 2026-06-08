@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { adminRequest } from "../../api/adminApi";
 import { uploadImageToCloudinary } from "../../api/cloudinaryApi";
 import { RichTextEditor } from "../../components/RichTextEditor";
+import {PostPreviewModal} from "../../components/PostPreviewModal";
 
 interface Category {
     id: number;
@@ -57,6 +58,12 @@ export default function AdminEditPost() {
     const [uploadingImage, setUploadingImage] = useState(false);
     const [savingPost, setSavingPost] = useState(false);
     const [error, setError] = useState("");
+
+    const [previewOpen, setPreviewOpen] = useState(false);
+
+    const selectedCategories = categories.filter((category) =>
+        categoryIds.includes(category.id)
+    );
 
     const canSubmit = useMemo(() => {
         return (
@@ -208,9 +215,19 @@ export default function AdminEditPost() {
                     <p>Atualize conteúdo, imagem, SEO e categorias do artigo.</p>
                 </div>
 
-                <Link to="/painel-secreto/posts">
-                    <button className="secondary-admin-button">Voltar</button>
-                </Link>
+                <div className="editor-actions">
+                    <button
+                        type="button"
+                        className="secondary-admin-button"
+                        onClick={() => setPreviewOpen(true)}
+                    >
+                        Preview
+                    </button>
+
+                    <Link to="/painel-secreto/posts">
+                        <button type="button" className="secondary-admin-button">Voltar</button>
+                    </Link>
+                </div>
             </div>
 
             {error && <div className="admin-error">{error}</div>}
@@ -321,6 +338,16 @@ export default function AdminEditPost() {
                     </div>
                 </aside>
             </form>
+
+            <PostPreviewModal
+                isOpen={previewOpen}
+                onClose={() => setPreviewOpen(false)}
+                title={title}
+                summary={summary}
+                content={content}
+                coverImageUrl={previewUrl || coverImageUrl}
+                categories={selectedCategories}
+            />
         </div>
     );
 }

@@ -10,6 +10,7 @@ import br.com.libertadfacilities.blog.exception.ResourceNotFoundException;
 import br.com.libertadfacilities.blog.mapper.CommentMapper;
 import br.com.libertadfacilities.blog.repositories.CommentRepository;
 import br.com.libertadfacilities.blog.repositories.PostRepository;
+import br.com.libertadfacilities.blog.services.observability.BlogMetricsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ public class PublicCommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final CommentMapper mapper;
+    private final BlogMetricsService blogMetricsService;
 
     public CommentResponse create(String postSlug, CreateCommentRequest request){
         Post post = postRepository.findBySlugAndStatus(postSlug, PostStatus.PUBLISHED)
@@ -31,6 +33,7 @@ public class PublicCommentService {
 
         Comment comment = mapper.toComment(request, post);
 
+        blogMetricsService.incrementCommentCreated(postSlug);
         return mapper.toResponse(commentRepository.save(comment));
     }
 

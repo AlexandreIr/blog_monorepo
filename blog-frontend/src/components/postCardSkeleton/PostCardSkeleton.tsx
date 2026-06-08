@@ -1,3 +1,4 @@
+// @ts-ignore
 import "./skeleton.css";
 
 export function PostCardSkeleton() {

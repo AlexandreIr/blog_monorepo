@@ -5,6 +5,7 @@ import { uploadImageToCloudinary } from "../../api/cloudinaryApi";
 // @ts-ignore
 import "./adminCss.css";
 import { RichTextEditor } from "../../components/RichTextEditor";
+import { PostPreviewModal} from "../../components/PostPreviewModal";
 
 interface Category {
   id: number;
@@ -46,6 +47,12 @@ export default function AdminNewPost() {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [savingPost, setSavingPost] = useState(false);
   const [error, setError] = useState("");
+  const [previewOpen, setPreviewOpen] = useState(false);
+
+
+  const selectedCategories = categories.filter((category) =>
+      categoryIds.includes(category.id)
+  );
 
   const canSubmit = useMemo(() => {
     return (
@@ -189,9 +196,19 @@ export default function AdminNewPost() {
           <p>Crie um artigo com imagem de capa, SEO básico e categorias.</p>
         </div>
 
-        <Link to="/painel-secreto/posts">
-          <button className="secondary-admin-button">Voltar</button>
-        </Link>
+        <div className="editor-actions">
+          <button
+              type="button"
+              className="secondary-admin-button"
+              onClick={() => setPreviewOpen(true)}
+          >
+            Preview
+          </button>
+
+          <Link to="/painel-secreto/posts">
+            <button type="button" className="secondary-admin-button">Voltar</button>
+          </Link>
+        </div>
       </div>
 
       {error && <div className="admin-error">{error}</div>}
@@ -314,6 +331,16 @@ export default function AdminNewPost() {
           </div>
         </aside>
       </form>
+
+      <PostPreviewModal
+          isOpen={previewOpen}
+          onClose={() => setPreviewOpen(false)}
+          title={title}
+          summary={summary}
+          content={content}
+          coverImageUrl={coverImageUrl || previewUrl}
+          categories={selectedCategories}
+      />
     </div>
   );
 }

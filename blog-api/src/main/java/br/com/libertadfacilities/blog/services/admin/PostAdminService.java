@@ -13,6 +13,7 @@ import br.com.libertadfacilities.blog.exception.ResourceNotFoundException;
 import br.com.libertadfacilities.blog.mapper.PostMapper;
 import br.com.libertadfacilities.blog.repositories.CategoryRepository;
 import br.com.libertadfacilities.blog.repositories.PostRepository;
+import br.com.libertadfacilities.blog.services.observability.BlogMetricsService;
 import br.com.libertadfacilities.blog.util.SlugUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,6 +34,7 @@ public class PostAdminService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
     private final PostMapper mapper;
+    private final BlogMetricsService blogMetricsService;
 
     public PostResponse create(CreatePostRequest request, User authenticatedUser){
 
@@ -44,6 +46,8 @@ public class PostAdminService {
         Set<Category> categories = resolveCategories(request.categoryIds());
 
         post.setCategories(categories);
+
+        blogMetricsService.incrementPostCreated();
         return mapper.toResponse(postRepository.save(post));
 
     }
@@ -108,6 +112,7 @@ public class PostAdminService {
         }
 
         Post updated = postRepository.save(post);
+        blogMetricsService.incrementPostPublished();
         return mapper.toResponse(updated);
     }
 
