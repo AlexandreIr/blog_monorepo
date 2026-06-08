@@ -3,7 +3,7 @@ services:
     image: postgres:16-alpine
     container_name: blog-postgres
     env_file:
-      - .env
+      - blog-api/.env
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -27,7 +27,7 @@ services:
     ports:
       - "8081:8081"
     env_file:
-      - .env
+      - blog-api/.env
     environment:
       - SPRING_DATASOURCE_URL=${DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
