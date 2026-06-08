@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { saveToken } from "../../api/adminApi";
 import "./adminCss.css";
 
-const API_URL = "http://localhost:8081/api";
+const API_URL = "https://libertad-api.onrender.com";
 
 interface LoginResponse {
     token: string;
