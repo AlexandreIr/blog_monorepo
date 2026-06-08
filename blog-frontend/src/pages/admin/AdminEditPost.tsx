@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { adminRequest } from "../../api/adminApi";
-import { uploadImageToCloudinary } from "../../api/CloudinaryApi";
+import { uploadImageToCloudinary } from "../../api/cloudinaryApi";
 import { RichTextEditor } from "../../components/RichTextEditor";
 import {PostPreviewModal} from "../../components/PostPreviewModal";
 
