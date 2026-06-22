@@ -34,6 +34,12 @@ public class Post extends  BaseEntity {
     @Column(length = 500)
     private String coverImageUrl;
 
+    @Column(name = "video_url", length = 600)
+    private String videoUrl;
+
+    @Column(name = "video_type", length = 100)
+    private String videoType;
+
     private String metaTitle;
 
     @Column(length = 300)

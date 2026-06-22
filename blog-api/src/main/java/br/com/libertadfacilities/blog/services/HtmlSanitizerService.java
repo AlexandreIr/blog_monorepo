@@ -19,12 +19,17 @@ public class HtmlSanitizerService {
                     "pre", "code",
                     "hr",
                     "a", "img",
-                    "mark", "span"
+                    "mark", "span",
+                    "video", "source"
             )
             .allowAttributes("href", "target", "rel")
             .onElements("a")
             .allowAttributes("src", "alt", "title")
             .onElements("img")
+            .allowAttributes("src", "type")
+            .onElements("source")
+            .allowAttributes("src", "controls", "poster", "preload")
+            .onElements("video")
             .allowUrlProtocols("http", "https", "mailto")
             .requireRelNofollowOnLinks()
             .toFactory();

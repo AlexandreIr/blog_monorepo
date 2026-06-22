@@ -10,12 +10,14 @@ const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
 const AdminComments = lazy(() => import("./pages/admin/AdminComments"));
 const AdminNewPost = lazy(() => import("./pages/admin/AdminNewPost"));
 const AdminEditPost = lazy(() => import("./pages/admin/AdminEditPost"));
+const AdminSecurity = lazy(() => import("./pages/admin/AdminSecurity"));
 
 export default function App() {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/categories/:slug" element={<Home />} />
+
 
             <Route
                 path="/posts/:slug"
@@ -35,6 +37,7 @@ export default function App() {
                 }
             />
 
+
             <Route
                 path="/painel-secreto"
                 element={
@@ -43,6 +46,7 @@ export default function App() {
                     </Suspense>
                 }
             >
+                <Route path="security" element={<AdminSecurity />} />
                 <Route index element={<AdminDashboard />} />
                 <Route path="posts" element={<AdminPosts />} />
                 <Route path="posts/new" element={<AdminNewPost />} />
