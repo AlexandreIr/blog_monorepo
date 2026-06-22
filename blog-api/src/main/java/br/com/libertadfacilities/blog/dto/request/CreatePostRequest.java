@@ -21,6 +21,8 @@ public record CreatePostRequest (
         @Size(max = 500, message = "URL da imagem deve ter no máximo 500 caracteres")
         String coverImageUrl,
 
+
+
         @Size(max = 255, message = "Meta title deve ter no máximo 255 caracteres")
         String metaTitle,
 

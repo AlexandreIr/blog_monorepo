@@ -368,4 +368,68 @@ a {
   background: #6b1821;
 }
 
+.security-card button {
+  margin-right: 10px;
+}
+
+.security-card button.danger {
+  background: #842029;
+}
+
+.two-factor-setup {
+  background: var(--soft-blue);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.two-factor-setup img {
+  width: 220px;
+  height: 220px;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.two-factor-setup code {
+  display: block;
+  word-break: break-all;
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.two-factor-setup form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.two-factor-setup input {
+  text-align: center;
+  font-size: 1.4rem;
+  letter-spacing: 6px;
+}
+
+@media (max-width: 900px) {
+  .security-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+.editor-content .ProseMirror video,
+.article-content video {
+  width: 100%;
+  max-width: 100%;
+  border-radius: 10px;
+  margin: 24px 0;
+  background: #000;
+  display: block;
+}
+
+.article-content video {
+  box-shadow: 0 12px 32px rgba(0, 48, 135, 0.14);
+}
+
 

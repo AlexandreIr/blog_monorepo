@@ -1,47 +1,50 @@
-interface CloudinaryUploadResponse {
-    secure_url: string;
-    public_id: string;
-    format: string;
-    width: number;
-    height: number;
-    bytes: number;
+import { getToken } from "./adminApi";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+
+async function uploadFile(endpoint: string, file: File): Promise<string> {
+  const token = getToken();
+
+  if (!token) {
+    throw new Error("Token de autenticação não encontrado. Faça login novamente.");
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`${API_URL}${endpoint}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+
+    console.error("Erro no upload:", {
+      status: response.status,
+      endpoint: `${API_URL}${endpoint}`,
+      body: errorBody,
+    });
+
+    throw new Error(errorBody || "Erro ao enviar arquivo.");
+  }
+
+  const data = await response.json();
+
+  if (!data.url) {
+    throw new Error("A API não retornou a URL do arquivo.");
+  }
+
+  return data.url;
 }
-// @ts-ignore
-const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-// @ts-ignore
-const UPLOAD_PRESET: string = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
-export async function uploadImageToCloudinary(file: File): Promise<string> {
-    if (!CLOUD_NAME && !UPLOAD_PRESET) {
-        throw new Error("CLOUD_NAME e UPLOAD_PRESET variables not present");
-    }
-    if(!CLOUD_NAME){
-        throw new Error("CLOUD_NAME variable not present");
-    }
-    if(!UPLOAD_PRESET){
-        throw new Error("UPLOAD_PRESET variable not present");
-    }
+export function uploadImage(file: File): Promise<string> {
+  return uploadFile("/api/admin/uploads/image", file);
+}
 
-    const formData = new FormData();
-
-    formData.append("file", file);
-    formData.append("upload_preset", UPLOAD_PRESET);
-    formData.append("folder", "blog-posts");
-
-    const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-        {
-            method: "POST",
-            body: formData,
-        }
-    );
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || "Erro ao enviar imagem para o Cloudinary.");
-    }
-
-    const data = (await response.json()) as CloudinaryUploadResponse;
-
-    return data.secure_url;
+export function uploadVideo(file: File): Promise<string> {
+  return uploadFile("/api/admin/uploads/video", file);
 }

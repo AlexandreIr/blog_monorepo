@@ -5,7 +5,8 @@ import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
-import { uploadImageToCloudinary } from "../api/cloudinaryApi";
+import { Video } from "./admin/editor/Video";
+import { uploadImage, uploadVideo } from "../api/cloudinaryApi";
 
 // @ts-ignore
 import "./richTextEditor.css";
@@ -16,8 +17,11 @@ interface RichTextEditorProps {
 }
 
 export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const videoInputRef = useRef<HTMLInputElement | null>(null);
+
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -38,6 +42,21 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     onUpdate({ editor }) {
       onChange(editor.getHTML());
     },
+    extensions: [
+      StarterKit,
+      Link.configure({
+        openOnClick: false,
+      }),
+      Image.configure({
+        inline: false,
+        allowBase64: false,
+      }),
+      Video,
+      Highlight,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
+    ],
   });
 
   if (!editor) return null;
@@ -82,6 +101,45 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     editor.chain().focus().setImage({ src: url.trim() }).run();
   }
 
+async function handleVideoUpload(event: React.ChangeEvent<HTMLInputElement>) {
+  const file = event.target.files?.[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("video/")) {
+    alert("Selecione apenas arquivos de vídeo.");
+    return;
+  }
+
+  const maxSizeInMb = 50;
+  const maxSizeInBytes = maxSizeInMb * 1024 * 1024;
+
+  if (file.size > maxSizeInBytes) {
+    alert(`O vídeo deve ter no máximo ${maxSizeInMb}MB.`);
+    return;
+  }
+
+  try {
+    setUploadingVideo(true);
+
+    const videoUrl = await uploadVideo(file);
+
+    editor.chain().focus().setVideo({
+      src: videoUrl,
+      type: file.type || "video/mp4",
+    }).run();
+  } catch (error) {
+    console.error("Erro ao enviar vídeo:", error);
+    alert("Não foi possível enviar o vídeo.");
+  } finally {
+    setUploadingVideo(false);
+
+    if (videoInputRef.current) {
+      videoInputRef.current.value = "";
+    }
+  }
+}
+
   async function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
@@ -103,7 +161,7 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     try {
       setUploadingImage(true);
 
-      const imageUrl = await uploadImageToCloudinary(file);
+      const imageUrl = await uploadImage(file);
 
       editor.chain().focus().setImage({ src: imageUrl }).run();
     } catch (error) {
@@ -112,8 +170,8 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     } finally {
       setUploadingImage(false);
 
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
+      if (imageInputRef.current) {
+        imageInputRef.current.value = "";
       }
     }
   }
@@ -180,8 +238,16 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
               Imagem URL
             </button>
 
-            <button type="button" disabled={uploadingImage} onClick={() => fileInputRef.current?.click()}>
+            <button type="button" disabled={uploadingImage} onClick={() => imageInputRef.current?.click()}>
               {uploadingImage ? "Enviando..." : "Upload imagem"}
+            </button>
+
+            <button
+              type="button"
+              disabled={uploadingVideo}
+              onClick={() => videoInputRef.current?.click()}
+            >
+              {uploadingVideo ? "Enviando vídeo..." : "Upload vídeo"}
             </button>
           </div>
 
@@ -196,11 +262,19 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
           </div>
 
           <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={handleImageUpload}
+            ref={imageInputRef}
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={handleImageUpload}
+          />
+
+          <input
+            ref={videoInputRef}
+            type="file"
+            accept="video/*"
+            hidden
+            onChange={handleVideoUpload}
           />
         </div>
 

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { adminRequest } from "../../api/adminApi";
-import { uploadImageToCloudinary } from "../../api/cloudinaryApi";
+import { uploadImage } from "../../api/cloudinaryApi";
 import { RichTextEditor } from "../../components/RichTextEditor";
 import {PostPreviewModal} from "../../components/PostPreviewModal";
 
@@ -150,7 +150,7 @@ export default function AdminEditPost() {
             setUploadingImage(true);
             setError("");
 
-            const uploadedUrl = await uploadImageToCloudinary(imageFile);
+            const uploadedUrl = await uploadImage(imageFile);
 
             setCoverImageUrl(uploadedUrl);
             setPreviewUrl("");
@@ -177,7 +177,7 @@ export default function AdminEditPost() {
             let finalCoverImageUrl = coverImageUrl;
 
             if (imageFile && !coverImageUrl) {
-                finalCoverImageUrl = await uploadImageToCloudinary(imageFile);
+                finalCoverImageUrl = await uploadImage(imageFile);
                 setCoverImageUrl(finalCoverImageUrl);
             }
 
