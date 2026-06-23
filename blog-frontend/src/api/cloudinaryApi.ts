@@ -1,5 +1,6 @@
 import { getToken } from "./adminApi";
 
+// @ts-ignore
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
 
 async function uploadFile(endpoint: string, file: File): Promise<string> {
@@ -42,9 +43,13 @@ async function uploadFile(endpoint: string, file: File): Promise<string> {
 }
 
 export function uploadImage(file: File): Promise<string> {
-  return uploadFile("/api/admin/uploads/image", file);
+  return uploadFile("/admin/uploads/image", file);
 }
 
 export function uploadVideo(file: File): Promise<string> {
-  return uploadFile("/api/admin/uploads/video", file);
+  return uploadFile("/admin/uploads/video", file);
+}
+
+export function uploadDocument(file: File): Promise<string> {
+  return uploadFile("/admin/uploads/document", file);
 }
