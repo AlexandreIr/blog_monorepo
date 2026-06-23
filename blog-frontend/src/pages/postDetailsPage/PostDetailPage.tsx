@@ -9,6 +9,8 @@ import { Footer } from "../../components/Footer";
 import "./postDetailsPage.css";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
 import {Category} from "../../types/blog";
+// @ts-ignore
+import "../admin/mediaStyles.css";
 
 export default function PostDetailPage() {
   const slug = window.location.pathname.split("/posts/")[1];
@@ -129,7 +131,7 @@ export default function PostDetailPage() {
                 <p className="article-summary">{post.summary}</p>
 
                 <div className="article-meta">
-                  <span>Por {post.authorName ?? "LCS"}</span>
+                  <span>Por equipe LCS</span>
 
                   <span>
                     <Calendar size={16} />
@@ -144,7 +146,7 @@ export default function PostDetailPage() {
                 </div>
 
                 <div
-                    className="article-content"
+                    className="article-content article-body"
                     dangerouslySetInnerHTML={{
                       __html: sanitizeHtml(post.content),
                     }}
@@ -159,12 +161,12 @@ export default function PostDetailPage() {
                   <div className="underline" />
                 </div>
 
-                <span>{comments.length} aprovado(s)</span>
+                <span>{comments.length} aprovado{comments.length>1?'s':''}</span>
               </div>
 
               {comments.length === 0 && (
                 <p className="empty-message">
-                  Nenhum comentário aprovado ainda. Seja o primeiro a participar.
+                  Nenhum comentário ainda. Seja o primeiro a participar.
                 </p>
               )}
 
