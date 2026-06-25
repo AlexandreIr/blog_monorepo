@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Novo Lead</title>
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; background: #f7f8fa; margin: 0; padding: 24px; }
+        .container { max-width: 760px; margin: 0 auto; background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+        .header { background: linear-gradient(135deg, #0ea5e9, #22c55e); color: #fff; padding: 20px 28px; }
+        .header h1 { margin: 0; font-size: 22px; }
+        .content { padding: 24px 28px; color: #1f2937; }
+        .section-title { margin: 18px 0 10px; font-size: 14px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.08em; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+        .row { margin: 12px 0; }
+        .card { background: #f9fafb; padding: 14px; border-radius: 8px; border: 1px solid #eef2f7; }
+        .label { font-size: 12px; color: #6b7280; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+        .value { font-size: 15px; color: #111827; }
+        .badge { display: inline-block; background: #eef6ff; color: #2563eb; padding: 6px 10px; border-radius: 999px; margin: 4px 6px 0 0; font-size: 12px; border: 1px solid #dbeafe; }
+        .footer { padding: 18px 28px; color: #6b7280; font-size: 12px; background: #f3f4f6; border-top: 1px solid #e5e7eb; }
+        .muted { color: #6b7280; }
+        .divider { height: 1px; background: #e5e7eb; margin: 18px 0; }
+        .pre { white-space: pre-wrap; background: #fff; border: 1px solid #e5e7eb; padding: 12px; border-radius: 8px; }
+        @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } .content { padding: 18px; } .header { padding: 16px 18px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Novo Lead Recebido</h1>
+    </div>
+    <div class="content">
+        <div class="section-title">Dados do contato</div>
+        <div class="grid">
+            <div class="card">
+                <div class="label">Nome do cliente</div>
+                <div class="value" th:text="${nomeCliente}">Nome do cliente</div>
+            </div>
+            <div class="card">
+                <div class="label">Função na empresa</div>
+                <div class="value" th:text="${funcaoNaEmpresa}">Cargo</div>
+            </div>
+            <div class="card">
+                <div class="label">Empresa</div>
+                <div class="value" th:text="${nomeEmpresa}">Empresa LTDA</div>
+            </div>
+            <div class="card">
+                <div class="label">CNPJ</div>
+                <div class="value" th:text="${cnpj}">00.000.000/0000-00</div>
+            </div>
+            <div class="card">
+                <div class="label">Telefone</div>
+                <div class="value" th:text="${telefone}">(11) 99999-9999</div>
+            </div>
+            <div class="card">
+                <div class="label">E-mail</div>
+                <div class="value" th:text="${email}">email@dominio.com</div>
+            </div>
+        </div>
+
+        <div class="section-title">Interesse em serviços</div>
+        <div class="row card">
+            <div class="label">Tipos de serviços desejados</div>
+            <div>
+                <span class="badge" th:each="s : ${tiposServicos}" th:text="${s}">Serviço</span>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <div class="label">Quantidade</div>
+                <div class="value" th:text="${quantidade}">1</div>
+            </div>
+            <div class="card">
+                <div class="label">Anexo enviado</div>
+                <div class="value" th:text="${temAnexo} ? 'Sim' : 'Não'">Não</div>
+            </div>
+        </div>
+
+        <div class="section-title">Informações adicionais</div>
+        <div class="grid">
+            <div class="card">
+                <div class="label">Colaboradores necessários (nossa parte)</div>
+                <div class="value" th:text="${colaboradoresNecessarios} != null ? ${colaboradoresNecessarios} : '-'">-</div>
+            </div>
+            <div class="card">
+                <div class="label">Quantidade de colaboradores do lead</div>
+                <div class="value" th:text="${quantidadeColaboradoresDoLead} != null ? ${quantidadeColaboradoresDoLead} : '-'">-</div>
+            </div>
+        </div>
+
+        <div class="section-title">Mensagem personalizada</div>
+        <div class="row">
+            <div class="pre" th:text="${mensagemPersonalizada} != null ? ${mensagemPersonalizada} : '—'">—</div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="row muted">
+            Este e-mail foi gerado automaticamente pelo site. Responder para este e-mail irá direcionar a resposta ao lead.
+        </div>
+    </div>
+    <div class="footer">
+        © <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2026</span> LCS. Todos os direitos reservados.
+    </div>
+</div>
+</body>
+</html>
