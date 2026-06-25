@@ -1,0 +1,24 @@
+server:
+  port: 8082
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    username: ale.fenandes23@gmail.com
+    password: ggiw aljk wufo qkqc
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 110MB
+
+
+app:
+  mail:
+    commercial-to: alex.silva250@hotmail.com
