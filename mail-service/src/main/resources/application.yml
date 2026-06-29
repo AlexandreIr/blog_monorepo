@@ -4,8 +4,8 @@ server:
 spring:
   mail:
     host: smtp.gmail.com
-    username: ale.fenandes23@gmail.com
-    password: ggiw aljk wufo qkqc
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     port: 587
     properties:
       mail:
@@ -15,10 +15,12 @@ spring:
             enable: true
   servlet:
     multipart:
-      max-file-size: 100MB
-      max-request-size: 110MB
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 
 app:
   mail:
-    commercial-to: alex.silva250@hotmail.com
+    commercial-to: ${COMMERCIAL_TEAM_EMAIL}
+  cnpj:
+    api-url: ${CNPJ_API_URL}
