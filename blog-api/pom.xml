@@ -11,8 +11,8 @@
 	<groupId>br.com.libertadfacilities</groupId>
 	<artifactId>blog</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>blog</name>
-	<description>Demo project for Spring Boot</description>
+	<name>blog-service</name>
+	<description>API do blog da libertad comercial e serviços</description>
 	<url/>
 	<licenses>
 		<license/>
