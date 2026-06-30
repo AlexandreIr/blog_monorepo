@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/api-gateway/pom.xml" />
         <option value="$PROJECT_DIR$/blog_libertad/pom.xml" />
         <option value="$PROJECT_DIR$/blog-api/pom.xml" />
+        <option value="$PROJECT_DIR$/mail-service/pom.xml" />
       </list>
     </option>
   </component>

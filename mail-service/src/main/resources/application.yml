@@ -1,0 +1,26 @@
+server:
+  port: 8082
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+
+app:
+  mail:
+    commercial-to: ${COMMERCIAL_TEAM_EMAIL}
+  cnpj:
+    api-url: ${CNPJ_API_URL}

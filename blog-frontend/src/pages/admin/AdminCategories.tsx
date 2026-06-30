@@ -16,6 +16,8 @@ interface PagedResponse<T> {
 export default function AdminCategories() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [name, setName] = useState("");
+    const [deletingId, setDeletingId] = useState<number | null>(null);
+    const [errorMessage, setErrorMessage] = useState("");
 
     async function loadCategories() {
         try {
@@ -50,6 +52,34 @@ export default function AdminCategories() {
         }
     }
 
+ async function deleteCategory(category: Category) {
+        const confirmed = window.confirm(
+            `Tem certeza que deseja apagar a categoria "${category.name}"?`
+        );
+
+        if (!confirmed) return;
+
+        try {
+            setErrorMessage("");
+            setDeletingId(category.id);
+
+            await adminRequest<void>(`/admin/categories/${category.id}`, {
+                method: "DELETE",
+            });
+
+            setCategories((previous) =>
+                previous.filter((item) => item.id !== category.id)
+            );
+        } catch (error) {
+            console.error("Erro ao apagar categoria:", error);
+            setErrorMessage(
+                "Não foi possível apagar a categoria. Verifique se ela não está vinculada a algum post."
+            );
+        } finally {
+            setDeletingId(null);
+        }
+    }
+
     useEffect(() => {
         loadCategories();
     }, []);
@@ -76,9 +106,17 @@ export default function AdminCategories() {
             <div className="admin-list">
                 {categories.map((category) => (
                     <div className="admin-card" key={category.id}>
-                        <div>
-                            <h2>{category.name}</h2>
-                            <p>{category.slug}</p>
+                        <div className="flex-between">
+                            <div>
+                                <h2>{category.name}</h2>
+                                <p>{category.slug}</p>
+                            </div>
+                            <span
+                            className="color-red"
+                            onClick={() => deleteCategory(category)}
+                            disabled={deletingId === category.id} >
+                                {deletingId === category.id ? "Apagando..." : "Apagar"}
+                            </span>
                         </div>
                     </div>
                 ))}

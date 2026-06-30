@@ -1,7 +1,9 @@
 package br.com.libertadfacilities.blog.controller.publicApi;
 
 import br.com.libertadfacilities.blog.dto.request.AuthRequest;
+import br.com.libertadfacilities.blog.dto.request.VerifyTwoFactorLoginRequest;
 import br.com.libertadfacilities.blog.dto.response.AuthResponse;
+import br.com.libertadfacilities.blog.dto.response.LoginResponse;
 import br.com.libertadfacilities.blog.entity.User;
 import br.com.libertadfacilities.blog.services.publicApi.AuthService;
 import br.com.libertadfacilities.blog.services.UserService;
@@ -32,7 +34,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest request){
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid AuthRequest request){
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/login/2fa")
+    public ResponseEntity<LoginResponse> verifyTwoFactorLogin(
+            @RequestBody @Valid VerifyTwoFactorLoginRequest request
+    ) {
+        return ResponseEntity.ok(authService.verifyTwoFactorLogin(request));
     }
 }
