@@ -4,11 +4,13 @@ import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -76,19 +78,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<StandardError> handlerGenericException(Exception ex,
-                                                                 HttpServletRequest request){
-        StandardError error = StandardError.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .error("Internal Server Error")
-                .message(ex.getMessage())
-                .path(request.getRequestURI())
-                .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<StandardError> handleIllegalArgument(IllegalArgumentException ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -107,5 +96,53 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of("message", "Email ou senha inválidos."));
     }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<?> handleMaxUploadSizeExceeded(
+            MaxUploadSizeExceededException exception,
+            HttpServletRequest request
+    ) {
+        exception.printStackTrace();
+
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(Map.of(
+                "type", exception.getClass().getName(),
+                "maxUploadSize", String.valueOf(exception.getMaxUploadSize()),
+                "message", exception.getMessage() == null ? "Maximum upload size exceeded" : exception.getMessage(),
+                "path", request.getRequestURI()
+        ));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<StandardError> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException ex,
+            HttpServletRequest request
+    ) {
+        StandardError error = StandardError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error("Malformed JSON")
+                .message("O corpo da requisição está em um formato JSON inválido.")
+                .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<StandardError> handlerGenericException(Exception ex,
+                                                                 HttpServletRequest request){
+        StandardError error = StandardError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .error("Internal Server Error")
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
+
 
 }

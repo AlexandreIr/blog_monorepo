@@ -108,7 +108,11 @@ export default function PostDetailPage() {
             <article className="article-shell">
               <div className="article-cover">
                 {post.coverImageUrl ? (
-                  <img src={post.coverImageUrl} alt={post.title} />
+                  <img
+                    src={post.coverImageUrl}
+                    alt={`Imagem de capa do artigo: ${post.title}`}
+                    loading="eager"
+                  />
                 ) : (
                   <div className="article-cover-placeholder">LCS</div>
                 )}
@@ -118,7 +122,7 @@ export default function PostDetailPage() {
               <div className="article-body">
                 <div className="article-categories">
                   {post.categories?.map((category : Category) => (
-                    <span key={category.id}>{category.name} | </span>
+                    <span key={category.id}>{category.name} </span>
                   ))}
                 </div>
 
