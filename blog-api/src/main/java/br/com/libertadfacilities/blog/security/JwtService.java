@@ -1,7 +1,6 @@
 package br.com.libertadfacilities.blog.security;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -41,21 +40,41 @@ public class JwtService {
 
     public boolean isTokenExpired(String token) {
         try {
-            return extractClaim(token, Claims::getExpiration).before(new Date());
-        } catch (ExpiredJwtException e) {
-            return true;
+            return !extractClaim(token, Claims::getExpiration).before(new Date());
         } catch (JwtException e) {
-            return true;
+            return false;
         }
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         try {
             String username = extractUsername(token);
-            return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+            return username.equals(userDetails.getUsername()) && isTokenExpired(token);
         } catch (JwtException e) {
             return false;
         }
+    }
+
+    public String generateTemporaryTwoFactorToken(UserDetails userDetails) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + 5 * 60 * 1000);
+
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .claim("type", "2fa")
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(getSignInKey())
+                .compact();
+    }
+
+    public boolean isTemporaryTwoFactorToken(String token) {
+        String type = extractAllClaims(token).get("type", String.class);
+        return "2fa".equals(type) && isTokenExpired(token);
+    }
+
+    public String extractUsernameFromAnyToken(String token) {
+        return extractUsername(token);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> resolver) throws JwtException {

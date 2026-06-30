@@ -997,3 +997,22 @@
 .preview-article {
     box-shadow: none;
 }
+
+.flex-between{
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+    align-items: center;
+}
+
+.color-red{
+    background: #C8102E;
+    padding: 12px;
+    border-radius: 4px;
+    color: var(--white);
+    cursor: pointer;
+}
+
+.color-red:hover{
+
+}

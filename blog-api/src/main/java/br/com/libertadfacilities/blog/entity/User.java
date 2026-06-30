@@ -29,4 +29,13 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role = UserRole.EDITOR;
+
+    @Column(nullable = false)
+    private boolean twoFactorEnabled = false;
+
+    @Column(length = 120)
+    private String twoFactorSecret;
+
+    @Column(length = 120)
+    private String twoFactorPendingSecret;
 }

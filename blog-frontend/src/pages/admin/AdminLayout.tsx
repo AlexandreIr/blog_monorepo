@@ -34,6 +34,7 @@ export default function AdminLayout() {
                     </Link>
 
                     <nav className="admin-nav">
+                        <NavLink to="/painel-secreto/security">Segurança</NavLink>
                         <NavLink to="/painel-secreto" end>Dashboard</NavLink>
                         <NavLink to="/painel-secreto/posts">Posts</NavLink>
                         <NavLink to="/painel-secreto/categories">Categorias</NavLink>
