@@ -2,6 +2,7 @@ package br.com.libertadfacilites.controllers;
 
 import br.com.libertadfacilites.dtos.EmailResposeDto;
 import br.com.libertadfacilites.dtos.LeadEmailRequestDto;
+import br.com.libertadfacilites.exceptions.TooManyRequestsException;
 import br.com.libertadfacilites.services.MailService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,6 @@ public class MailController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmailResposeDto> sendEmail(@Valid @ModelAttribute LeadEmailRequestDto request,
                                                      BindingResult bindingResult) {
-        System.out.println("Request: " + request.getNomeCliente() +
-                request.getFuncaoNaEmpresa() +
-                request.getMensagemPersonalizada() +
-                request.getTiposServicos());
         try {
             if (bindingResult.hasErrors()) {
                 StringBuilder sb = new StringBuilder("Erro de validação: ");
@@ -40,7 +37,13 @@ public class MailController {
             }
 
             EmailResposeDto response = mailService.sendLeadEmail(request);
-            return ResponseEntity.ok(response);
+                        if (response.success()) {
+                            return ResponseEntity.ok(response);
+                        }
+                        return ResponseEntity.badRequest().body(response);
+        } catch (TooManyRequestsException ex) {
+            return ResponseEntity.status(429)
+                    .body(new EmailResposeDto(false, ex.getMessage()));
         } catch (Exception ex) {
             return ResponseEntity.internalServerError()
                     .body(new EmailResposeDto(false, "Falha ao enviar e-mail: " + ex.getMessage()));
