@@ -1,7 +1,7 @@
 import { getToken } from "./adminApi";
 
 // @ts-ignore
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+const API_URL = import.meta.env.VITE_API_URL || "https://libertad-api.onrender.com";
 
 async function uploadFile(endpoint: string, file: File): Promise<string> {
   const token = getToken();
