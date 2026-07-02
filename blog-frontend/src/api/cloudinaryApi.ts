@@ -43,13 +43,13 @@ async function uploadFile(endpoint: string, file: File): Promise<string> {
 }
 
 export function uploadImage(file: File): Promise<string> {
-  return uploadFile("/admin/uploads/image", file);
+  return uploadFile("/api/admin/uploads/image", file);
 }
 
 export function uploadVideo(file: File): Promise<string> {
-  return uploadFile("/admin/uploads/video", file);
+  return uploadFile("/api/admin/uploads/video", file);
 }
 
 export function uploadDocument(file: File): Promise<string> {
-  return uploadFile("/admin/uploads/document", file);
+  return uploadFile("/api/admin/uploads/document", file);
 }
