@@ -4,7 +4,7 @@ import { saveToken } from "../../api/adminApi";
 // @ts-ignore
 import "./adminCss.css";
 
-const API_URL = "http://localhost:8081";
+const API_URL = "https://libertad-api.onrender.com";
 
 interface LoginResponse {
   token: string | null;
