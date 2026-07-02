@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nova manifestação recebida pela Ouvidoria LCS</title>
+</head>
+
+<body style="margin:0; padding:0; background-color:#f3f6fa; font-family:Arial, Helvetica, sans-serif; color:#10171F;">
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f3f6fa; padding:32px 16px;">
+    <tr>
+        <td align="center">
+            <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width:760px; background-color:#ffffff; border-radius:24px; overflow:hidden; box-shadow:0 12px 32px rgba(16,23,31,0.10);">
+
+                <tr>
+                    <td style="background-color:#10171F; padding:32px;">
+                        <p style="margin:0 0 12px; color:#F5B33B; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase;">
+                            Ouvidoria LCS
+                        </p>
+
+                        <h1 style="margin:0; color:#ffffff; font-size:28px; line-height:1.25;">
+                            Nova manifestação recebida pelo site
+                        </h1>
+
+                        <p style="margin:16px 0 0; color:#dbe6f3; font-size:15px; line-height:1.7;">
+                            Uma nova manifestação foi enviada por meio do formulário de Ouvidoria da LCS.
+                            Analise as informações abaixo com sigilo, responsabilidade e prioridade adequada.
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:28px 32px 8px;">
+                        <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                            <tr>
+                                <td style="padding:0 0 20px;">
+                                    <div style="background-color:#EEF5FC; border-left:5px solid #002E84; border-radius:16px; padding:18px 20px;">
+                                        <p style="margin:0; color:#002E84; font-size:13px; font-weight:700; text-transform:uppercase;">
+                                            Assunto
+                                        </p>
+
+                                        <p style="margin:8px 0 0; color:#10171F; font-size:20px; font-weight:700; line-height:1.4;" th:text="${assunto}">
+                                            Assunto da manifestação
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:8px 32px 24px;">
+                        <h2 style="margin:0 0 16px; color:#10171F; font-size:20px;">
+                            Dados da manifestação
+                        </h2>
+
+                        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;">
+                            <tr>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; width:220px; color:#64748b; font-size:14px; font-weight:700;">
+                                    Tipo de manifestação
+                                </td>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#10171F; font-size:14px;" th:text="${tipoManifestacao}">
+                                    Reclamação
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#64748b; font-size:14px; font-weight:700;">
+                                    Identificação
+                                </td>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#10171F; font-size:14px;" th:text="${identificacao}">
+                                    Identificada
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#64748b; font-size:14px; font-weight:700;">
+                                    Vínculo com a LCS
+                                </td>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#10171F; font-size:14px;" th:text="${vinculo}">
+                                    Cliente
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#64748b; font-size:14px; font-weight:700;">
+                                    Departamento / unidade
+                                </td>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#10171F; font-size:14px;" th:text="${departamento}">
+                                    Operações
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#64748b; font-size:14px; font-weight:700;">
+                                    Data da ocorrência
+                                </td>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#10171F; font-size:14px;" th:text="${dataOcorrencia}">
+                                    02/07/2026
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#64748b; font-size:14px; font-weight:700;">
+                                    Local da ocorrência
+                                </td>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#10171F; font-size:14px;" th:text="${localOcorrencia}">
+                                    Unidade / contrato
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr th:if="${identificada}">
+                    <td style="padding:0 32px 24px;">
+                        <h2 style="margin:0 0 16px; color:#10171F; font-size:20px;">
+                            Dados do manifestante
+                        </h2>
+
+                        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;">
+                            <tr>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; width:220px; color:#64748b; font-size:14px; font-weight:700;">
+                                    Nome
+                                </td>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#10171F; font-size:14px;" th:text="${nome}">
+                                    Nome do manifestante
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#64748b; font-size:14px; font-weight:700;">
+                                    E-mail
+                                </td>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#10171F; font-size:14px;">
+                                    <a th:href="'mailto:' + ${email}" th:text="${email}" style="color:#002E84; text-decoration:none;">
+                                        email@exemplo.com
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#64748b; font-size:14px; font-weight:700;">
+                                    Telefone
+                                </td>
+                                <td style="padding:12px 0; border-bottom:1px solid #e5e7eb; color:#10171F; font-size:14px;" th:text="${telefone}">
+                                    (00) 00000-0000
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr th:unless="${identificada}">
+                    <td style="padding:0 32px 24px;">
+                        <div style="border-radius:16px; background-color:#fff7ed; border:1px solid #fed7aa; padding:18px 20px;">
+                            <p style="margin:0; color:#9a3412; font-size:14px; font-weight:700;">
+                                Manifestação anônima
+                            </p>
+
+                            <p style="margin:8px 0 0; color:#7c2d12; font-size:14px; line-height:1.7;">
+                                O manifestante optou por não se identificar. Evite tentar identificar a pessoa por informações indiretas, salvo quando isso for indispensável para apuração responsável.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:0 32px 24px;">
+                        <h2 style="margin:0 0 16px; color:#10171F; font-size:20px;">
+                            Descrição do relato
+                        </h2>
+
+                        <div style="background-color:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:20px;">
+                            <p style="margin:0; color:#10171F; font-size:15px; line-height:1.8; white-space:pre-line;" th:text="${descricao}">
+                                Descrição completa enviada pelo formulário.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr th:if="${envolvidos != null and !#strings.isEmpty(envolvidos)}">
+                    <td style="padding:0 32px 24px;">
+                        <h2 style="margin:0 0 16px; color:#10171F; font-size:20px;">
+                            Pessoas envolvidas
+                        </h2>
+
+                        <div style="background-color:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:20px;">
+                            <p style="margin:0; color:#10171F; font-size:15px; line-height:1.8; white-space:pre-line;" th:text="${envolvidos}">
+                                Pessoas envolvidas.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr th:if="${evidencias != null and !#strings.isEmpty(evidencias)}">
+                    <td style="padding:0 32px 24px;">
+                        <h2 style="margin:0 0 16px; color:#10171F; font-size:20px;">
+                            Evidências ou informações complementares
+                        </h2>
+
+                        <div style="background-color:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:20px;">
+                            <p style="margin:0; color:#10171F; font-size:15px; line-height:1.8; white-space:pre-line;" th:text="${evidencias}">
+                                Evidências informadas.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:0 32px 32px;">
+                        <div style="background-color:#10171F; border-radius:18px; padding:22px;">
+                            <p style="margin:0; color:#F5B33B; font-size:13px; font-weight:700; text-transform:uppercase;">
+                                Atenção
+                            </p>
+
+                            <p style="margin:10px 0 0; color:#ffffff; font-size:14px; line-height:1.7;">
+                                Esta mensagem contém informações sensíveis e deve ser tratada apenas pelas pessoas responsáveis pela Ouvidoria da LCS.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="background-color:#EEF5FC; padding:22px 32px;">
+                        <p style="margin:0; color:#64748b; font-size:12px; line-height:1.6;">
+                            E-mail gerado automaticamente pelo site da LCS em
+                            <strong th:text="${dataEnvio}">02/07/2026 10:00</strong>.
+                            Não responda diretamente esta mensagem caso o endereço remetente seja automático.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

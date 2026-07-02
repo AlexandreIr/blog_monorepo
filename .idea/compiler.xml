@@ -19,7 +19,7 @@
         </processorPath>
         <module name="blog" />
       </profile>
-      <profile name="Annotation profile for blog (1)" enabled="true">
+      <profile name="Annotation profile for mail-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
