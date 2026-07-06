@@ -20,6 +20,7 @@ spring:
 
 
 app:
+  front-end-url: ${FRONT_END_URL}
   mail:
     commercial-to: ${COMMERCIAL_TEAM_EMAIL}
     ouvidoria-to: ${OUVIDORIA_MAIL}
