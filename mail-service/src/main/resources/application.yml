@@ -27,5 +27,5 @@ app:
   mail:
     commercial-to: ${COMMERCIAL_TEAM_EMAIL}
     ouvidoria-to: ${OUVIDORIA_MAIL}
-  cnpj:
-    api-url: ${CNPJ_API_URL}
+  resend:
+    api-key: ${RESEND_API_KEY}
