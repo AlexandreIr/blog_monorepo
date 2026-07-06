@@ -54,6 +54,7 @@ server:
 
 app:
   frontend-url: ${FRONTEND_URL}
+  blog-admin-url: ${BLOG_ADMIN_URL}
   budget:
     recipient: ${BUDGET_RECIPIENT_EMAIL}
 
