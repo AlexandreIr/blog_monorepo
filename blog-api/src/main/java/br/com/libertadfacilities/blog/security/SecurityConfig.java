@@ -35,7 +35,7 @@ public class SecurityConfig {
     @Value("${app.frontend-url}")
     private String frontendUrl;
 
-    @Value("${app.blog-admin-url")
+    @Value("${app.blog-admin-url}")
     private String blogAdminUrl;
 
     @Bean
