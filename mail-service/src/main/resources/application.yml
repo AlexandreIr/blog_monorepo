@@ -1,5 +1,8 @@
 server:
-  port: 8082
+  port: ${PORT:8082}
+  tomcat:
+    max-http-form-post-size: 50MB
+    max-swallow-size: -1
 
 spring:
   mail:
@@ -13,14 +16,15 @@ spring:
           auth: true
           starttls:
             enable: true
+
   servlet:
     multipart:
+      enabled: true
       max-file-size: 50MB
       max-request-size: 50MB
 
-
 app:
-  front-end-url: ${FRONT_END_URL}
+  frontend-url: ${FRONT_END_URL}
   mail:
     commercial-to: ${COMMERCIAL_TEAM_EMAIL}
     ouvidoria-to: ${OUVIDORIA_MAIL}
