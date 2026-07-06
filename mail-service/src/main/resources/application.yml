@@ -6,7 +6,7 @@ server:
 
 spring:
   mail:
-    host: smtp.gmail.com
+    host: ${MAIL_SMTP}
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
     port: 587
@@ -16,7 +16,6 @@ spring:
           auth: true
           starttls:
             enable: true
-
   servlet:
     multipart:
       enabled: true
