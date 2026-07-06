@@ -38,7 +38,7 @@ public class MailService {
     @Value("${app.resend.api-key}")
     private String resendApiKey;
 
-    @Value("${app.mail.username}")
+    @Value("${spring.mail.username}")
     private String mailFrom;
 
     @Value("${app.mail.commercial-to}")
