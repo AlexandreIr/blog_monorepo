@@ -3,6 +3,7 @@ server:
   tomcat:
     max-http-form-post-size: 50MB
     max-swallow-size: -1
+    max-part-count: 50
 
 spring:
   mail:

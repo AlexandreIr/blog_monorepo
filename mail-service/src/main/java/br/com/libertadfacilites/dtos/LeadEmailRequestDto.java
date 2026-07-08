@@ -49,10 +49,8 @@ public class LeadEmailRequestDto {
     @Positive(message = "Colaboradores necessários deve ser positivo")
     private Integer colaboradoresNecessarios;
 
-    @PositiveOrZero(message = "Quantidade de colaboradores do lead deve ser zero ou positivo")
-    private Integer quantidadeColaboradoresDoLead;
 
-    private String mensagemPersonalizada;
+    private String mensagem;
 
     private MultipartFile arquivo;
 

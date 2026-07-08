@@ -1,6 +1,6 @@
 package br.com.libertadfacilites.controllers;
 
-import br.com.libertadfacilites.dtos.EmailResposeDto;
+import br.com.libertadfacilites.dtos.EmailResponseDto;
 import br.com.libertadfacilites.dtos.LeadEmailRequestDto;
 import br.com.libertadfacilites.services.MailService;
 import jakarta.validation.Valid;
@@ -21,11 +21,11 @@ public class MailController {
     private final MailService mailService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EmailResposeDto> sendEmail(@Valid @ModelAttribute LeadEmailRequestDto request,
-                                                     BindingResult bindingResult) {
+    public ResponseEntity<EmailResponseDto> sendEmail(@Valid @ModelAttribute LeadEmailRequestDto request,
+                                                      BindingResult bindingResult) {
         System.out.println("Request: " + request.getNomeCliente() +
                 request.getFuncaoNaEmpresa() +
-                request.getMensagemPersonalizada() +
+                request.getMensagem() +
                 request.getTiposServicos());
         try {
             if (bindingResult.hasErrors()) {
@@ -36,14 +36,14 @@ public class MailController {
                           .append(": ")
                           .append(err.getDefaultMessage())
                           .append("] "));
-                return ResponseEntity.badRequest().body(new EmailResposeDto(false, sb.toString().trim()));
+                return ResponseEntity.badRequest().body(new EmailResponseDto(false, sb.toString().trim()));
             }
 
-            EmailResposeDto response = mailService.sendLeadEmail(request);
+            EmailResponseDto response = mailService.sendLeadEmail(request);
             return ResponseEntity.ok(response);
         } catch (Exception ex) {
             return ResponseEntity.internalServerError()
-                    .body(new EmailResposeDto(false, "Falha ao enviar e-mail: " + ex.getMessage()));
+                    .body(new EmailResponseDto(false, "Falha ao enviar e-mail: " + ex.getMessage()));
         }
     }
 }

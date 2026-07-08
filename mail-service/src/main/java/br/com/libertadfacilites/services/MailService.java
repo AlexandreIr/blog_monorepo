@@ -1,20 +1,19 @@
 package br.com.libertadfacilites.services;
 
-import br.com.libertadfacilites.dtos.EmailResposeDto;
+import br.com.libertadfacilites.dtos.EmailResponseDto;
 import br.com.libertadfacilites.dtos.LeadEmailRequestDto;
-import com.resend.Resend;
-import com.resend.services.emails.model.Attachment;
-import com.resend.services.emails.model.CreateEmailOptions;
-import com.resend.services.emails.model.CreateEmailResponse;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -34,9 +33,7 @@ public class MailService {
     };
 
     private final TemplateEngine templateEngine;
-
-    @Value("${app.resend.api-key}")
-    private String resendApiKey;
+    private final JavaMailSender mailSender;
 
     @Value("${spring.mail.username}")
     private String mailFrom;
@@ -44,12 +41,12 @@ public class MailService {
     @Value("${app.mail.commercial-to}")
     private String commercialTo;
 
-    public EmailResposeDto sendLeadEmail(LeadEmailRequestDto dto) {
+    public EmailResponseDto sendLeadEmail(LeadEmailRequestDto dto) {
         try {
             List<String> validationErrors = validateLeadData(dto);
 
             if (!validationErrors.isEmpty()) {
-                return new EmailResposeDto(
+                return new EmailResponseDto(
                         false,
                         "Dados inválidos: " + String.join(" ", validationErrors)
                 );
@@ -58,7 +55,7 @@ public class MailService {
             MultipartFile file = dto.getArquivo();
 
             if (file != null && !file.isEmpty() && file.getSize() > MAX_FILE_SIZE_BYTES) {
-                return new EmailResposeDto(
+                return new EmailResponseDto(
                         false,
                         "Arquivo excede o limite de 20MB."
                 );
@@ -79,56 +76,74 @@ public class MailService {
             ctx.setVariable("quantidade", dto.getQuantidade());
             ctx.setVariable("funcaoNaEmpresa", safe(dto.getFuncaoNaEmpresa()));
             ctx.setVariable("colaboradoresNecessarios", dto.getColaboradoresNecessarios());
-            ctx.setVariable("quantidadeColaboradoresDoLead", dto.getQuantidadeColaboradoresDoLead());
-            ctx.setVariable("mensagemPersonalizada", safe(dto.getMensagemPersonalizada()));
+            ctx.setVariable("mensagemPersonalizada", safe(dto.getMensagem()));
             ctx.setVariable("temAnexo", file != null && !file.isEmpty());
 
             String html = templateEngine.process("lead-email", ctx);
 
-            Resend resend = new Resend(resendApiKey);
+            sendEmail(dto, html, servicosStr, file);
 
-            CreateEmailOptions.Builder emailBuilder = CreateEmailOptions.builder()
-                    .from(mailFrom)
-                    .to(getToAddresses())
-                    .subject(buildSubject(dto, servicosStr))
-                    .html(html);
-
-            if (hasText(dto.getEmail())) {
-                emailBuilder.replyTo(dto.getEmail().trim());
-            }
-
-            if (file != null && !file.isEmpty()) {
-                Attachment attachment = buildAttachment(file);
-                emailBuilder.attachments(List.of(attachment));
-            }
-
-            CreateEmailOptions emailOptions = emailBuilder.build();
-
-            CreateEmailResponse response = resend.emails().send(emailOptions);
-
-            return new EmailResposeDto(
+            return new EmailResponseDto(
                     true,
-                    "E-mail enviado com sucesso. ID: " + response.getId()
+                    "E-mail enviado com sucesso."
             );
+
         } catch (Exception ex) {
-            return new EmailResposeDto(
+            System.out.println("===== SMTP EMAIL ERROR =====");
+            ex.printStackTrace();
+            System.out.println("============================");
+
+            return new EmailResponseDto(
                     false,
-                    "Falha ao enviar e-mail: " + ex.getMessage()
+                    "Falha ao enviar e-mail: " + ex.getClass().getSimpleName() + " - " + ex.getMessage()
             );
         }
     }
 
-    private Attachment buildAttachment(MultipartFile file) throws Exception {
-        String filename = hasText(file.getOriginalFilename())
-                ? file.getOriginalFilename()
-                : "anexo";
+    private void sendEmail(
+            LeadEmailRequestDto dto,
+            String html,
+            String servicosStr,
+            MultipartFile file
+    ) throws Exception {
+        boolean hasAttachment = file != null && !file.isEmpty();
 
-        String base64Content = Base64.getEncoder().encodeToString(file.getBytes());
+        MimeMessage message = mailSender.createMimeMessage();
 
-        return Attachment.builder()
-                .fileName(filename)
-                .content(base64Content)
-                .build();
+        MimeMessageHelper helper = new MimeMessageHelper(
+                message,
+                hasAttachment,
+                "UTF-8"
+        );
+
+        helper.setFrom(mailFrom);
+        helper.setTo(getToAddresses());
+        helper.setSubject(buildSubject(dto, servicosStr));
+        helper.setText(html, true);
+
+        if (hasText(dto.getEmail())) {
+            helper.setReplyTo(dto.getEmail().trim());
+        }
+
+        if (hasAttachment) {
+            String filename = hasText(file.getOriginalFilename())
+                    ? file.getOriginalFilename()
+                    : "anexo";
+
+            ByteArrayResource attachmentResource = new ByteArrayResource(file.getBytes());
+
+            helper.addAttachment(filename, attachmentResource);
+        }
+
+        System.out.println("===== SMTP EMAIL DEBUG =====");
+        System.out.println("From: " + mailFrom);
+        System.out.println("To: " + String.join(", ", getToAddresses()));
+        System.out.println("Reply-To: " + dto.getEmail());
+        System.out.println("Subject: " + buildSubject(dto, servicosStr));
+        System.out.println("Has attachment: " + hasAttachment);
+        System.out.println("============================");
+
+        mailSender.send(message);
     }
 
     private String[] getToAddresses() {
@@ -165,6 +180,10 @@ public class MailService {
 
         if (normalizeServices(dto.getTiposServicos()).isEmpty()) {
             errors.add("Selecione pelo menos um serviço desejado.");
+        }
+
+        if (dto.getQuantidade() == null || dto.getQuantidade() <= 0) {
+            errors.add("Quantidade deve ser maior que zero.");
         }
 
         return errors;

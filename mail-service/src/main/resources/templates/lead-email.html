@@ -66,10 +66,6 @@
         </div>
         <div class="grid">
             <div class="card">
-                <div class="label">Quantidade</div>
-                <div class="value" th:text="${quantidade}">1</div>
-            </div>
-            <div class="card">
                 <div class="label">Anexo enviado</div>
                 <div class="value" th:text="${temAnexo} ? 'Sim' : 'Não'">Não</div>
             </div>
@@ -79,17 +75,13 @@
         <div class="grid">
             <div class="card">
                 <div class="label">Colaboradores necessários (nossa parte)</div>
-                <div class="value" th:text="${colaboradoresNecessarios} != null ? ${colaboradoresNecessarios} : '-'">-</div>
-            </div>
-            <div class="card">
-                <div class="label">Quantidade de colaboradores do lead</div>
-                <div class="value" th:text="${quantidadeColaboradoresDoLead} != null ? ${quantidadeColaboradoresDoLead} : '-'">-</div>
+                <div class="value" th:text="${quantidade} != null ? ${quantidade} : '-'">-</div>
             </div>
         </div>
 
         <div class="section-title">Mensagem personalizada</div>
         <div class="row">
-            <div class="pre" th:text="${mensagemPersonalizada} != null ? ${mensagemPersonalizada} : '—'">—</div>
+            <div class="pre" th:text="${mensagem} != null ? ${mensagem} : '—'">—</div>
         </div>
 
         <div class="divider"></div>
