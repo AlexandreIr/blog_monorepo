@@ -1,32 +1,24 @@
 server:
   port: ${PORT:8082}
   tomcat:
-    max-http-form-post-size: 50MB
+    max-http-form-post-size: 14MB
     max-swallow-size: -1
     max-part-count: 50
 
-spring:
-  mail:
-    host: ${MAIL_SMTP}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-    port: 587
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
   servlet:
     multipart:
       enabled: true
-      max-file-size: 50MB
-      max-request-size: 50MB
+      max-file-size: 14MB
+      max-request-size: 14MB
 
 app:
   frontend-url: ${FRONT_END_URL}
+  brevo:
+    api-key: ${BREVO_API_KEY}
+    base-url: https://api.brevo.com/v3
+
   mail:
-    commercial-to: ${COMMERCIAL_TEAM_EMAIL}
+    from: ${MAIL_FROM}
+    from-name: ${MAIL_FROM_NAME:Libertad Comercial e Serviços}
+    commercial-to: ${MAIL_COMMERCIAL_TO}
     ouvidoria-to: ${OUVIDORIA_MAIL}
-  resend:
-    api-key: ${RESEND_API_KEY}
